@@ -12,8 +12,8 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class GpsLocationListener implements LocationListener {
     private boolean isGpsFixed = false;
-    private float minimalAccuracyInMeters = 10.0f;
-    private float minimalChangeInMeters = 5.0f;
+    private float minimalAccuracyInMeters = 20.0f;
+    private float minimalChangeInMeters = 1.0f;
     private int minimalIntervalInMiliseconds = 2000;
     private SpacetimeListener observer;
     private SpacetimePoint lastReturnedPoint = null;

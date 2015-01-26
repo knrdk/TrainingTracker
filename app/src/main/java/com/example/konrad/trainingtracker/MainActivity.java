@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +20,7 @@ import java.util.LinkedList;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 
-public class MainActivity extends Activity implements SpacetimeListener  {
+public class MainActivity extends Activity implements SpacetimeListener, TimerListener  {
     private static final String WAKE_LOCK_TAG = "TrainingTrackerWakeLockTag";
     private PowerManager.WakeLock wakeLock;
     private GoogleMap map;
@@ -52,6 +53,9 @@ public class MainActivity extends Activity implements SpacetimeListener  {
         averageSpeed = (TextView) findViewById(R.id.averageSpeed);
 
         trackerState = (TextView) findViewById(R.id.trackerState);
+        if (state == TrackerState.WAITING_FOR_GPS) {
+            trackerState.setText("WAITING_FOR_GPS");
+        }
 
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG);
@@ -59,6 +63,11 @@ public class MainActivity extends Activity implements SpacetimeListener  {
         GpsLocationListener locationListener = new GpsLocationListener(this);
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(GPS_PROVIDER, 1000, 5, locationListener);
+
+        Handler handler = new Handler();
+        Timer timer = new Timer(this, handler);
+        handler.post(timer);
+        timer.start();
     }
 
     @Override
@@ -139,6 +148,11 @@ public class MainActivity extends Activity implements SpacetimeListener  {
 
         double speed = training.getAverageSpeed();
         averageSpeed.setText(Double.toString(speed));
+    }
+
+    @Override
+    public void updateTime(long ms) {
+        //trackerState.setText(Long.toString(ms));
     }
 
     private enum TrackerState{
