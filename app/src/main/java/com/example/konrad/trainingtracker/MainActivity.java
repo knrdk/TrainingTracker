@@ -1,12 +1,15 @@
 package com.example.konrad.trainingtracker;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -153,6 +156,31 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
     @Override
     public void updateTime(long ms) {
         //trackerState.setText(Long.toString(ms));
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode== KeyEvent.KEYCODE_BACK/* && state==TrackerState.RUNNING*/){
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Alert");
+            alertDialog.setMessage("Czy chcesz anulować trening");
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TAK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NIE",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private enum TrackerState{
