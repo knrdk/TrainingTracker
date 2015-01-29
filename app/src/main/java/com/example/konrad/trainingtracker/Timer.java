@@ -37,7 +37,7 @@ public class Timer implements Runnable  {
         if(isRunning){
             currentMiliseconds = SystemClock.uptimeMillis() - startTime;
             long totalMiliseconds = currentMiliseconds + aggregatedMiliseconds;
-            listener.updateTime(totalMiliseconds);
+            listener.updateTime(totalMiliseconds/1000);
         }
         handler.postDelayed(this,100);
     }

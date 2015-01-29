@@ -47,7 +47,7 @@ public class Training {
     public double getAverageSpeed(){
         double duration = getDurationInSeconds();
         if(duration > 0)
-            return getDistanceInMeters()/duration;
+            return getDistanceInMeters()/duration*3.6;
         else
             return 0;
     }

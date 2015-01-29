@@ -2,16 +2,23 @@ package com.example.konrad.trainingtracker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,12 +38,15 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
     private TrackerState state;
     private Training training;
 
-    TextView totalDistance;
-    TextView totalDuration;
-    TextView averageSpeed;
-    TextView currentSpeed;
+    private TextView totalDistance
+            , totalDuration
+            , averageSpeed
+            , currentSpeed
+            , trackerState
+            , timerTextView;
 
-    TextView trackerState;
+    private Timer timer;
+    private NotificationManager notificationManager;
 
     public MainActivity(){
         state = TrackerState.WAITING_FOR_GPS;
@@ -54,30 +64,59 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
         totalDuration = (TextView) findViewById(R.id.totalDuration);
         currentSpeed = (TextView) findViewById(R.id.currentSpeed);
         averageSpeed = (TextView) findViewById(R.id.averageSpeed);
+        timerTextView = (TextView) findViewById(R.id.timer);
 
         trackerState = (TextView) findViewById(R.id.trackerState);
-        if (state == TrackerState.WAITING_FOR_GPS) {
-            trackerState.setText("WAITING_FOR_GPS");
-        }
+        updateStateDescription();
 
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG);
 
-        GpsLocationListener locationListener = new GpsLocationListener(this);
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(GPS_PROVIDER, 1000, 5, locationListener);
+        initLocationListener();
 
         Handler handler = new Handler();
-        Timer timer = new Timer(this, handler);
+        timer = new Timer(this, handler);
         handler.post(timer);
         timer.start();
+
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        showNotification(0);
+    }
+
+    private void setState(TrackerState newState){
+        state = newState;
+        updateStateDescription();
+    }
+
+    private void updateStateDescription() {
+        trackerState.setText(state.toString());
+    }
+
+    private void initLocationListener() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        checkIfGpsIsAvailable(locationManager);
+        initLocation(locationManager);
+
+        GpsLocationListener locationListener = new GpsLocationListener(this);
+        locationManager.requestLocationUpdates(GPS_PROVIDER, 1000, 5, locationListener); //TODO: delete magic numbers
+    }
+
+    private void checkIfGpsIsAvailable(LocationManager locationManager) {
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            showAlertGpsDisabled();
+        }
+    }
+
+    private void initLocation(LocationManager locationManager) {
+        Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 15));
     }
 
     @Override
     public void gpsReady(){
         if(state==TrackerState.WAITING_FOR_GPS){
-            state = TrackerState.GPS_READY;
-            trackerState.setText("GPS_READY");
+            setState(TrackerState.GPS_READY);
         }
     }
 
@@ -94,31 +133,27 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
         if(state==TrackerState.GPS_READY){
             wakeLock.acquire();
             training.addNewSegment();
-            state = TrackerState.RUNNING;
-            trackerState.setText("RUNNING");
+            setState(TrackerState.RUNNING);
         }
     }
 
     public void onPauseTraining(View view){
         if(state==TrackerState.RUNNING){
-            state = TrackerState.PAUSED;
-            trackerState.setText("PAUSED");
+            setState(TrackerState.PAUSED);
         }
     }
 
     public void onResumeTraining(View view){
         if(state==TrackerState.PAUSED){
             training.addNewSegment();
-            state = TrackerState.RUNNING;
-            trackerState.setText("RUNNING");
+            setState(TrackerState.RUNNING);
         }
     }
 
     public void onStopTraining(View view){
         if(state == TrackerState.PAUSED){
-            state = TrackerState.STOPPED;
+            setState(TrackerState.STOPPED);
             wakeLock.release();
-            trackerState.setText("STOPPED");
         }
     }
 
@@ -154,40 +189,94 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
     }
 
     @Override
-    public void updateTime(long ms) {
-        //trackerState.setText(Long.toString(ms));
+    public void updateTime(long sec) {
+        timerTextView.setText(Long.toString(sec));
+        showNotification(sec);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode== KeyEvent.KEYCODE_BACK/* && state==TrackerState.RUNNING*/){
-            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-            alertDialog.setTitle("Alert");
-            alertDialog.setMessage("Czy chcesz anulować trening");
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TAK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NIE",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
+            showAlertCloseApplication();
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
+    private void showAlertCloseApplication() {
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Czy chcesz przerwać trening");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TAK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        stop();
+                        finish();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NIE",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    private void showAlertGpsDisabled(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("GPS jest wyłączony, czy chcesz go włączyć ?")
+                .setCancelable(false)
+                .setPositiveButton("TAK",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("NIE",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    private void showNotification(long sec){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_plusone_small_off_client)
+                        .setContentTitle("Total Time")
+                        .setContentText(Long.toString(sec));
+
+        notificationManager.notify(123, mBuilder.build());
+    }
+
+    public void stop(){
+        timer.stop();
+        notificationManager.cancel(123);
+    }
+
     private enum TrackerState{
-        WAITING_FOR_GPS,
-        GPS_READY,
-        RUNNING,
-        PAUSED,
-        STOPPED
+        WAITING_FOR_GPS("Waiting for GPS"),
+        GPS_READY("GPS Ready"),
+        RUNNING("Running"),
+        PAUSED("Paused"),
+        STOPPED("Stopped");
+
+        String description;
+
+        private TrackerState(String description){
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return description;
+        }
     }
 }
