@@ -57,6 +57,14 @@ public class Training {
             return 0;
     }
 
+    public double getCurrentSpeed(){
+        if(currentSegment!=null){
+            return currentSegment.getCurrentSpeed();
+        }else{
+            return 0;
+        }
+    }
+
     public LatLng getLastLocation() {
         if (currentSegment != null) {
             return currentSegment.getLastLocation();

@@ -13,13 +13,17 @@ public class Segment {
     ;
     private double distance = 0;
     private long duration = 0;
+    private double currentSpeed = 0;
     private SpacetimePoint lastPoint;
 
     public void addPoint(SpacetimePoint point) {
         points.add(point);
         if (lastPoint != null) {
-            distance += lastPoint.getDistanceTo(point);
-            duration += lastPoint.getDifferenceInMiliseconds(point);
+            double lastDistance = lastPoint.getDistanceTo(point);
+            long lastDuration = lastPoint.getDifferenceInMiliseconds(point);
+            distance += lastDistance;
+            duration += lastDuration;
+            currentSpeed = getSpeed(lastDistance, lastDuration);
         }
         lastPoint = point;
     }
@@ -42,5 +46,18 @@ public class Segment {
 
     public long getDuration() {
         return duration;
+    }
+
+    public double getCurrentSpeed(){
+        return currentSpeed;
+    }
+
+    private static double getSpeed(double distance, long duration){
+        double durationInSeconds = (double)duration/1000;
+        if(durationInSeconds>0){
+            return distance/durationInSeconds;
+        }else{
+            return 0;
+        }
     }
 }

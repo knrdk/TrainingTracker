@@ -32,7 +32,7 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
     private TrackerState state;
     private Training training;
 
-    private TextView totalDistance, totalDuration, averageSpeed, currentSpeed, trackerState, timerTextView;
+    private TextView totalDistance, totalDuration, averageSpeed, currentSpeedTV, trackerState, timerTextView;
 
     private Timer timer;
     private NotificationManager notificationManager;
@@ -51,7 +51,7 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
 
         totalDistance = (TextView) findViewById(R.id.totalDistance);
         totalDuration = (TextView) findViewById(R.id.totalDuration);
-        currentSpeed = (TextView) findViewById(R.id.currentSpeed);
+        currentSpeedTV = (TextView) findViewById(R.id.currentSpeed);
         averageSpeed = (TextView) findViewById(R.id.averageSpeed);
         timerTextView = (TextView) findViewById(R.id.timer);
 
@@ -172,6 +172,9 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
 
         double duration = training.getDuration();
         totalDuration.setText(Double.toString(duration));
+
+        double currentSpeed = training.getCurrentSpeed();
+        currentSpeedTV.setText(Double.toString(currentSpeed));
 
         double speed = training.getAverageSpeed();
         averageSpeed.setText(Double.toString(speed));
