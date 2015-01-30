@@ -14,21 +14,16 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="acc" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="INFO" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.example.konrad.trainingtracker" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="400bb3a5-a5b3-4b4e-befb-6377af3aab75" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\Comarch\Desktop\TrainingTracker\.idea\libraries\appcompat_v7_21_0_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Comarch\Desktop\TrainingTracker\.idea\libraries\play_services_6_5_87.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Comarch\Desktop\TrainingTracker\.idea\libraries\support_annotations_21_0_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Comarch\Desktop\TrainingTracker\.idea\libraries\support_v4_21_0_3.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Timer.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Timer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Segment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Segment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Training.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Training.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TrainingTracker.iws" />
@@ -52,11 +47,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.287796" vertical-offset="1882" max-vertical-offset="2618">
-              <caret line="254" column="0" selection-start-line="254" selection-start-column="0" selection-end-line="254" selection-end-column="0" />
+            <state vertical-scroll-proportion="-14.392858" vertical-offset="1178" max-vertical-offset="2754">
+              <caret line="183" column="0" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
               <folding>
                 <element signature="method#MainActivity#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#setState#0;class#MainActivity#0" expanded="false" />
@@ -71,26 +66,13 @@
                 <element signature="method#onStopTraining#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#updateMap#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#updateLastLocation#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#updateTrack#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#updateInformation#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#onKeyDown#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#showAlertGpsDisabled#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#9314#9315#0" expanded="true" />
-                <element signature="e#9368#9369#0" expanded="true" />
-                <element signature="e#9422#9423#0" expanded="true" />
-                <element signature="e#9464#9465#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="748">
-              <caret line="24" column="46" selection-start-line="24" selection-start-column="46" selection-end-line="24" selection-end-column="46" />
-              <folding>
-                <element signature="e#749#767#0" expanded="true" />
+                <element signature="e#9142#9143#0" expanded="true" />
+                <element signature="e#9196#9197#0" expanded="true" />
+                <element signature="e#9250#9251#0" expanded="true" />
+                <element signature="e#9292#9293#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -152,8 +134,21 @@
       <file leaf-file-name="Training.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Training.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="1122">
-              <caret line="47" column="49" selection-start-line="47" selection-start-column="49" selection-end-line="47" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="267" max-vertical-offset="1139">
+              <caret line="61" column="14" selection-start-line="61" selection-start-column="14" selection-end-line="61" selection-end-column="14" />
+              <folding>
+                <element signature="e#783#784#0" expanded="true" />
+                <element signature="e#829#830#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpacetimePoint.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/SpacetimePoint.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.35355285" vertical-offset="0" max-vertical-offset="969">
+              <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -1137,20 +1132,21 @@
       <list>
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Map.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_map.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/SpacetimePoint.java" />
         <option value="$PROJECT_DIR$/app/src/androidTest/java/com/example/konrad/trainingtracker/SpacetimePointTest.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Segment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/SpacetimeListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-land/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/GpsLocationListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/TimerViewModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/TimerListener.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Training.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Timer.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Segment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Training.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/SpaceTimePoint.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/SpacetimePoint.java" />
       </list>
     </option>
   </component>
@@ -1220,8 +1216,26 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="manifests" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TrainingTracker" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="trainingtracker" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1463,7 +1477,11 @@
       <created>1422271698616</created>
       <updated>1422271698616</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="- notyfikacje dla timera">
+      <created>1422548724979</created>
+      <updated>1422548724979</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1496,14 +1514,15 @@
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39863715" sideWeight="0.48789713" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32777777" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32777777" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32777777" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32777777" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1517,7 +1536,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -1570,7 +1588,9 @@
     <MESSAGE value="wyświetlanie fragmentu mapy" />
     <MESSAGE value="- zaznaczanie na mapie&#10;- dystans, czas, prędkość" />
     <MESSAGE value="- layout dla horizontal&#10;- timer" />
-    <option name="LAST_COMMIT_MESSAGE" value="- layout dla horizontal&#10;- timer" />
+    <MESSAGE value="- notyfikacje dla timera" />
+    <MESSAGE value="- optymalizacja + refaktoryzacja  klasy Trening i Segment" />
+    <option name="LAST_COMMIT_MESSAGE" value="- optymalizacja + refaktoryzacja  klasy Trening i Segment" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1582,7 +1602,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="969">
           <caret line="47" column="49" selection-start-line="47" selection-start-column="49" selection-end-line="47" selection-end-column="49" />
-          <folding />
+          <folding>
+            <element signature="e#783#784#0" expanded="true" />
+            <element signature="e#829#830#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1604,14 +1627,13 @@
             <element signature="method#onStopTraining#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateMap#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateLastLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#updateTrack#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateInformation#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onKeyDown#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showAlertGpsDisabled#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#9314#9315#0" expanded="true" />
-            <element signature="e#9368#9369#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9464#9465#0" expanded="true" />
+            <element signature="e#9142#9143#0" expanded="true" />
+            <element signature="e#9196#9197#0" expanded="true" />
+            <element signature="e#9250#9251#0" expanded="true" />
+            <element signature="e#9292#9293#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1636,6 +1658,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="255">
           <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1662,14 +1685,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="374" max-vertical-offset="1122">
           <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Segment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#783#784#0" expanded="true" />
+            <element signature="e#829#830#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1691,14 +1710,13 @@
             <element signature="method#onStopTraining#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateMap#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateLastLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#updateTrack#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateInformation#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onKeyDown#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showAlertGpsDisabled#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#9314#9315#0" expanded="true" />
-            <element signature="e#9368#9369#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9464#9465#0" expanded="true" />
+            <element signature="e#9142#9143#0" expanded="true" />
+            <element signature="e#9196#9197#0" expanded="true" />
+            <element signature="e#9250#9251#0" expanded="true" />
+            <element signature="e#9292#9293#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1707,6 +1725,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="255">
           <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1733,14 +1752,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="686" max-vertical-offset="1122">
           <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Segment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="850">
-          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+          <folding>
+            <element signature="e#783#784#0" expanded="true" />
+            <element signature="e#829#830#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1762,14 +1777,13 @@
             <element signature="method#onStopTraining#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateMap#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateLastLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#updateTrack#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateInformation#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onKeyDown#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showAlertGpsDisabled#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#9314#9315#0" expanded="true" />
-            <element signature="e#9368#9369#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9464#9465#0" expanded="true" />
+            <element signature="e#9142#9143#0" expanded="true" />
+            <element signature="e#9196#9197#0" expanded="true" />
+            <element signature="e#9250#9251#0" expanded="true" />
+            <element signature="e#9292#9293#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1778,6 +1792,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="238">
           <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1814,14 +1829,13 @@
             <element signature="method#onStopTraining#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateMap#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateLastLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#updateTrack#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateInformation#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onKeyDown#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showAlertGpsDisabled#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#9314#9315#0" expanded="true" />
-            <element signature="e#9368#9369#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9464#9465#0" expanded="true" />
+            <element signature="e#9142#9143#0" expanded="true" />
+            <element signature="e#9196#9197#0" expanded="true" />
+            <element signature="e#9250#9251#0" expanded="true" />
+            <element signature="e#9292#9293#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1870,14 +1884,13 @@
             <element signature="method#onStopTraining#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateMap#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateLastLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#updateTrack#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateInformation#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onKeyDown#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showAlertGpsDisabled#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#9314#9315#0" expanded="true" />
-            <element signature="e#9368#9369#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9464#9465#0" expanded="true" />
+            <element signature="e#9142#9143#0" expanded="true" />
+            <element signature="e#9196#9197#0" expanded="true" />
+            <element signature="e#9250#9251#0" expanded="true" />
+            <element signature="e#9292#9293#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1908,14 +1921,13 @@
             <element signature="method#onStopTraining#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateMap#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateLastLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#updateTrack#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateInformation#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onKeyDown#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showAlertGpsDisabled#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#9314#9315#0" expanded="true" />
-            <element signature="e#9368#9369#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9464#9465#0" expanded="true" />
+            <element signature="e#9142#9143#0" expanded="true" />
+            <element signature="e#9196#9197#0" expanded="true" />
+            <element signature="e#9250#9251#0" expanded="true" />
+            <element signature="e#9292#9293#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1946,14 +1958,13 @@
             <element signature="method#onStopTraining#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateMap#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateLastLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#updateTrack#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateInformation#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onKeyDown#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showAlertGpsDisabled#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#9314#9315#0" expanded="true" />
-            <element signature="e#9368#9369#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9464#9465#0" expanded="true" />
+            <element signature="e#9142#9143#0" expanded="true" />
+            <element signature="e#9196#9197#0" expanded="true" />
+            <element signature="e#9250#9251#0" expanded="true" />
+            <element signature="e#9292#9293#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2025,20 +2036,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/SpacetimePoint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="410" max-vertical-offset="969">
-          <caret line="55" column="15" selection-start-line="55" selection-start-column="15" selection-end-line="55" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Segment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="748">
-          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-land/activity_main.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -2054,6 +2051,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
           <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2076,14 +2074,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238">
           <caret line="6" column="36" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Training.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="116" max-vertical-offset="969">
-          <caret line="47" column="49" selection-start-line="47" selection-start-column="49" selection-end-line="47" selection-end-column="49" />
           <folding />
         </state>
       </provider>
@@ -2125,8 +2115,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="748">
-          <caret line="24" column="46" selection-start-line="24" selection-start-column="46" selection-end-line="24" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.677643" vertical-offset="0" max-vertical-offset="731">
+          <caret line="23" column="47" selection-start-line="23" selection-start-column="47" selection-end-line="23" selection-end-column="47" />
           <folding>
             <element signature="e#749#767#0" expanded="true" />
           </folding>
@@ -2135,8 +2125,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.287796" vertical-offset="1882" max-vertical-offset="2618">
-          <caret line="254" column="0" selection-start-line="254" selection-start-column="0" selection-end-line="254" selection-end-column="0" />
+        <state vertical-scroll-proportion="-14.392858" vertical-offset="1178" max-vertical-offset="2754">
+          <caret line="183" column="0" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
           <folding>
             <element signature="method#MainActivity#0;class#MainActivity#0" expanded="false" />
             <element signature="method#setState#0;class#MainActivity#0" expanded="false" />
@@ -2151,15 +2141,43 @@
             <element signature="method#onStopTraining#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateMap#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateLastLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#updateTrack#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateInformation#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onKeyDown#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showAlertGpsDisabled#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#9314#9315#0" expanded="true" />
-            <element signature="e#9368#9369#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9464#9465#0" expanded="true" />
+            <element signature="e#9142#9143#0" expanded="true" />
+            <element signature="e#9196#9197#0" expanded="true" />
+            <element signature="e#9250#9251#0" expanded="true" />
+            <element signature="e#9292#9293#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Segment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.67130435" vertical-offset="73" max-vertical-offset="765">
+          <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/Training.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="267" max-vertical-offset="1139">
+          <caret line="61" column="14" selection-start-line="61" selection-start-column="14" selection-end-line="61" selection-end-column="14" />
+          <folding>
+            <element signature="e#783#784#0" expanded="true" />
+            <element signature="e#829#830#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/konrad/trainingtracker/SpacetimePoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35355285" vertical-offset="0" max-vertical-offset="969">
+          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>

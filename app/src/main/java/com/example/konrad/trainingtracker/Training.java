@@ -9,14 +9,19 @@ import java.util.LinkedList;
  * Created by Konrad on 2015-01-25.
  */
 public class Training {
-    private LinkedList<Segment> segments;
+    private LinkedList<Segment> segments = new LinkedList<>();;
+    private Segment currentSegment;
+    private double distance = 0;
+    private long duration = 0;
 
-    public Training(){
-        segments = new LinkedList<>();
-    }
 
     public void addNewSegment(){
-        segments.add(new Segment());
+        if(currentSegment!=null){
+            distance+= currentSegment.getDistance();
+            duration+= currentSegment.getDuration();
+        }
+        currentSegment = new Segment();
+        segments.add(currentSegment);
     }
 
     public Collection<Segment> getSegments(){
@@ -24,37 +29,38 @@ public class Training {
     }
 
     public void addNewPoint(SpacetimePoint point){
-        Segment last = segments.getLast();
-        last.addPoint(point);
+        currentSegment.addPoint(point);
     }
 
-    public double getDistanceInMeters(){
-        double distance = 0;
-        for(Segment segment : segments){
-            distance += segment.getDistanceInMeters();
+    public double getDistance(){
+        double currentSegmentDistance =0;
+        if(currentSegment!=null){
+            currentSegmentDistance = currentSegment.getDistance();
         }
-        return distance;
+        return distance + currentSegmentDistance;
     }
 
-    public double getDurationInSeconds(){
-        long duration = 0;
-        for(Segment segment : segments){
-            duration += segment.getDurationInMiliseconds();
+    public double getDuration(){
+        long currentDuration = 0;
+        if(currentSegment!=null){
+            currentDuration = currentSegment.getDuration();
         }
-        return (double)duration/1000;
+        return (double)(duration + currentDuration)/1000;
     }
 
     public double getAverageSpeed(){
-        double duration = getDurationInSeconds();
+        double duration = getDuration();
         if(duration > 0)
-            return getDistanceInMeters()/duration*3.6;
+            return getDistance()/duration*3.6;
         else
             return 0;
     }
 
     public LatLng getLastLocation(){
-        Segment lastSegment = segments.getLast();
-        SpacetimePoint lastPoint = lastSegment.getLastPoint();
-        return lastPoint.getLocation();
+        if(currentSegment!=null){
+            return currentSegment.getLastLocation();
+        }else{
+            return null;
+        }
     }
 }

@@ -1,44 +1,45 @@
 package com.example.konrad.trainingtracker;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * Created by Konrad on 2015-01-25.
+ * Created by Comarch on 2015-01-30.
  */
 public class Segment{
-    private LinkedList<SpacetimePoint> points;
-
-    public Segment(){
-        points = new LinkedList<>();
-    }
+    private LinkedList<SpacetimePoint> points = new LinkedList<>();;
+    private double distance = 0;
+    private long duration = 0;
+    private SpacetimePoint lastPoint;
 
     public void addPoint(SpacetimePoint point){
         points.add(point);
+        if(lastPoint!=null){
+            distance += lastPoint.getDistanceTo(point);
+            duration += lastPoint.getDifferenceInMiliseconds(point);
+        }
+        lastPoint = point;
     }
 
-    public SpacetimePoint getLastPoint(){
-        return points.getLast();
+    public LatLng getLastLocation(){
+        if(lastPoint!=null){
+            return lastPoint.getLocation();
+        }else{
+            return null;
+        }
     }
 
     public Collection<SpacetimePoint> getPoints(){
         return points;
     }
 
-    public double getDistanceInMeters(){
-        double distance = 0;
-        int size = points.size();
-        for(int i=0;i<size-1;i++){
-            SpacetimePoint first = points.get(i);
-            SpacetimePoint second = points.get(i+1);
-            distance += first.getDistanceTo(second);
-        }
+    public double getDistance(){
         return distance;
     }
 
-    public long getDurationInMiliseconds(){
-        SpacetimePoint start = points.getFirst();
-        SpacetimePoint end = points.getLast();
-        return start.getDifferenceInMiliseconds(end);
+    public long getDuration(){
+        return duration;
     }
 }

@@ -3,8 +3,6 @@ package com.example.konrad.trainingtracker;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,19 +12,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import java.util.LinkedList;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 
@@ -178,10 +172,10 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
     }
 
     private void updateInformation(){
-        double distance = training.getDistanceInMeters();
+        double distance = training.getDistance();
         totalDistance.setText(Double.toString(distance));
 
-        double duration = training.getDurationInSeconds();
+        double duration = training.getDuration();
         totalDuration.setText(Double.toString(duration));
 
         double speed = training.getAverageSpeed();
