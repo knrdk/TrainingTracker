@@ -9,7 +9,7 @@ public class TimerViewModel {
     private int seconds;
     private int miliseconds;
 
-    public TimerViewModel(int h, int m, int s, int ms){
+    public TimerViewModel(int h, int m, int s, int ms) {
         hours = h;
         minutes = m;
         seconds = s;

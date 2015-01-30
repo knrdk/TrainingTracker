@@ -21,7 +21,7 @@ public class SpacetimePoint {
     }
 
     public SpacetimePoint(LatLng location, float accuracy) {
-        this(new Date(),location,accuracy);
+        this(new Date(), location, accuracy);
     }
 
     public Date getDate() {
@@ -37,11 +37,11 @@ public class SpacetimePoint {
     }
 
 
-    public float getDistanceTo(SpacetimePoint other){
-        return getDistanceBetween(getLocation(),other.getLocation());
+    public float getDistanceTo(SpacetimePoint other) {
+        return getDistanceBetween(getLocation(), other.getLocation());
     }
 
-    private static float getDistanceBetween(LatLng x, LatLng y){
+    private static float getDistanceBetween(LatLng x, LatLng y) {
         Location a = new Location("");
         a.setLatitude(x.latitude);
         a.setLongitude(x.longitude);
@@ -53,11 +53,11 @@ public class SpacetimePoint {
         return Math.abs(a.distanceTo(b));
     }
 
-    public long getDifferenceInMiliseconds(SpacetimePoint other){
-        return getDifferenceInMiliseconds(getDate(),other.getDate());
+    public long getDifferenceInMiliseconds(SpacetimePoint other) {
+        return getDifferenceInMiliseconds(getDate(), other.getDate());
     }
 
-    private static long getDifferenceInMiliseconds(Date x, Date y){
-        return (long)Math.abs(x.getTime()-y.getTime());
+    private static long getDifferenceInMiliseconds(Date x, Date y) {
+        return (long) Math.abs(x.getTime() - y.getTime());
     }
 }

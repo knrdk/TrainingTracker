@@ -5,5 +5,6 @@ package com.example.konrad.trainingtracker;
  */
 public interface SpacetimeListener {
     public void gpsReady();
+
     public void addSpacetimePoint(SpacetimePoint x);
 }

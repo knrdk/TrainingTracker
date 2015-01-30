@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 
-public class MainActivity extends Activity implements SpacetimeListener, TimerListener  {
+public class MainActivity extends Activity implements SpacetimeListener, TimerListener {
     private static final String WAKE_LOCK_TAG = "TrainingTrackerWakeLockTag";
     private PowerManager.WakeLock wakeLock;
     private GoogleMap map;
@@ -32,17 +32,12 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
     private TrackerState state;
     private Training training;
 
-    private TextView totalDistance
-            , totalDuration
-            , averageSpeed
-            , currentSpeed
-            , trackerState
-            , timerTextView;
+    private TextView totalDistance, totalDuration, averageSpeed, currentSpeed, trackerState, timerTextView;
 
     private Timer timer;
     private NotificationManager notificationManager;
 
-    public MainActivity(){
+    public MainActivity() {
         state = TrackerState.WAITING_FOR_GPS;
         training = new Training();
     }
@@ -77,7 +72,7 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
         showNotification(0);
     }
 
-    private void setState(TrackerState newState){
+    private void setState(TrackerState newState) {
         state = newState;
         updateStateDescription();
     }
@@ -97,7 +92,7 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
     }
 
     private void checkIfGpsIsAvailable(LocationManager locationManager) {
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             showAlertGpsDisabled();
         }
     }
@@ -108,50 +103,50 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
     }
 
     @Override
-    public void gpsReady(){
-        if(state==TrackerState.WAITING_FOR_GPS){
+    public void gpsReady() {
+        if (state == TrackerState.WAITING_FOR_GPS) {
             setState(TrackerState.GPS_READY);
         }
     }
 
     @Override
     public void addSpacetimePoint(SpacetimePoint x) {
-        if(state==TrackerState.RUNNING){
+        if (state == TrackerState.RUNNING) {
             training.addNewPoint(x);
             updateMap();
             updateInformation();
         }
     }
 
-    public void onStartTraining(View view){
-        if(state==TrackerState.GPS_READY){
+    public void onStartTraining(View view) {
+        if (state == TrackerState.GPS_READY) {
             wakeLock.acquire();
             training.addNewSegment();
             setState(TrackerState.RUNNING);
         }
     }
 
-    public void onPauseTraining(View view){
-        if(state==TrackerState.RUNNING){
+    public void onPauseTraining(View view) {
+        if (state == TrackerState.RUNNING) {
             setState(TrackerState.PAUSED);
         }
     }
 
-    public void onResumeTraining(View view){
-        if(state==TrackerState.PAUSED){
+    public void onResumeTraining(View view) {
+        if (state == TrackerState.PAUSED) {
             training.addNewSegment();
             setState(TrackerState.RUNNING);
         }
     }
 
-    public void onStopTraining(View view){
-        if(state == TrackerState.PAUSED){
+    public void onStopTraining(View view) {
+        if (state == TrackerState.PAUSED) {
             setState(TrackerState.STOPPED);
             wakeLock.release();
         }
     }
 
-    private void updateMap(){
+    private void updateMap() {
         updateLastLocation();
         updateTrack();
     }
@@ -161,17 +156,17 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(last, 15));
     }
 
-    private void updateTrack(){
-        for(Segment segment : training.getSegments()){
+    private void updateTrack() {
+        for (Segment segment : training.getSegments()) {
             PolylineOptions polylineOptions = new PolylineOptions().geodesic(true);
-            for(SpacetimePoint point : segment.getPoints()){
+            for (SpacetimePoint point : segment.getPoints()) {
                 polylineOptions.add(point.getLocation());
             }
             map.addPolyline(polylineOptions);
         }
     }
 
-    private void updateInformation(){
+    private void updateInformation() {
         double distance = training.getDistance();
         totalDistance.setText(Double.toString(distance));
 
@@ -190,7 +185,7 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode== KeyEvent.KEYCODE_BACK/* && state==TrackerState.RUNNING*/){
+        if (keyCode == KeyEvent.KEYCODE_BACK/* && state==TrackerState.RUNNING*/) {
             showAlertCloseApplication();
             return true;
         }
@@ -218,21 +213,21 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
         alertDialog.show();
     }
 
-    private void showAlertGpsDisabled(){
+    private void showAlertGpsDisabled() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("GPS jest wyłączony, czy chcesz go włączyć ?")
                 .setCancelable(false)
                 .setPositiveButton("TAK",
-                        new DialogInterface.OnClickListener(){
-                            public void onClick(DialogInterface dialog, int id){
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
                                 Intent callGPSSettingIntent = new Intent(
                                         android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                 startActivity(callGPSSettingIntent);
                             }
                         });
         alertDialogBuilder.setNegativeButton("NIE",
-                new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id){
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
                 });
@@ -240,7 +235,7 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
         alert.show();
     }
 
-    private void showNotification(long sec){
+    private void showNotification(long sec) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_plusone_small_off_client)
@@ -250,12 +245,12 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
         notificationManager.notify(123, mBuilder.build());
     }
 
-    public void stop(){
+    public void stop() {
         timer.stop();
         notificationManager.cancel(123);
     }
 
-    private enum TrackerState{
+    private enum TrackerState {
         WAITING_FOR_GPS("Waiting for GPS"),
         GPS_READY("GPS Ready"),
         RUNNING("Running"),
@@ -264,7 +259,7 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
 
         String description;
 
-        private TrackerState(String description){
+        private TrackerState(String description) {
             this.description = description;
         }
 

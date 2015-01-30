@@ -18,7 +18,7 @@ public class GpsLocationListener implements LocationListener {
     private SpacetimeListener observer;
     private SpacetimePoint lastReturnedPoint = null;
 
-    public GpsLocationListener(SpacetimeListener x){
+    public GpsLocationListener(SpacetimeListener x) {
         observer = x;
     }
 
@@ -26,33 +26,33 @@ public class GpsLocationListener implements LocationListener {
     public void onLocationChanged(Location location) {
         float accuracy = location.getAccuracy();
         Log.i("accuracy", Float.toString(accuracy));
-        if(!isGpsFixed){
-            if(accuracy<minimalAccuracyInMeters){
+        if (!isGpsFixed) {
+            if (accuracy < minimalAccuracyInMeters) {
                 isGpsFixed = true;
                 observer.gpsReady();
             }
         }
 
-        if(isGpsFixed){
+        if (isGpsFixed) {
             LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
             SpacetimePoint current = new SpacetimePoint(currentLocation, accuracy);
-            if(shouldNotify(current)){
+            if (shouldNotify(current)) {
                 lastReturnedPoint = current;
                 observer.addSpacetimePoint(current);
             }
         }
     }
 
-    private boolean shouldNotify(SpacetimePoint current){
-        if(lastReturnedPoint==null){
+    private boolean shouldNotify(SpacetimePoint current) {
+        if (lastReturnedPoint == null) {
             return true;
         }
 
-        if(lastReturnedPoint.getDifferenceInMiliseconds(current) < minimalIntervalInMiliseconds){
+        if (lastReturnedPoint.getDifferenceInMiliseconds(current) < minimalIntervalInMiliseconds) {
             return false;
         }
 
-        if(lastReturnedPoint.getDistanceTo(current) < minimalChangeInMeters){
+        if (lastReturnedPoint.getDistanceTo(current) < minimalChangeInMeters) {
             return false;
         }
 
@@ -61,16 +61,16 @@ public class GpsLocationListener implements LocationListener {
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
+        Log.d("GpsLocationListener","onStatusChanged");
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
+        Log.d("GpsLocationListener","onProviderEnabled");
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
+        Log.d("GpsLocationListener","onProviderDisabled");
     }
 }

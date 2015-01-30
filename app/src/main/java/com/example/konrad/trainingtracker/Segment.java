@@ -8,38 +8,39 @@ import java.util.LinkedList;
 /**
  * Created by Comarch on 2015-01-30.
  */
-public class Segment{
-    private LinkedList<SpacetimePoint> points = new LinkedList<>();;
+public class Segment {
+    private LinkedList<SpacetimePoint> points = new LinkedList<>();
+    ;
     private double distance = 0;
     private long duration = 0;
     private SpacetimePoint lastPoint;
 
-    public void addPoint(SpacetimePoint point){
+    public void addPoint(SpacetimePoint point) {
         points.add(point);
-        if(lastPoint!=null){
+        if (lastPoint != null) {
             distance += lastPoint.getDistanceTo(point);
             duration += lastPoint.getDifferenceInMiliseconds(point);
         }
         lastPoint = point;
     }
 
-    public LatLng getLastLocation(){
-        if(lastPoint!=null){
+    public LatLng getLastLocation() {
+        if (lastPoint != null) {
             return lastPoint.getLocation();
-        }else{
+        } else {
             return null;
         }
     }
 
-    public Collection<SpacetimePoint> getPoints(){
+    public Collection<SpacetimePoint> getPoints() {
         return points;
     }
 
-    public double getDistance(){
+    public double getDistance() {
         return distance;
     }
 
-    public long getDuration(){
+    public long getDuration() {
         return duration;
     }
 }
