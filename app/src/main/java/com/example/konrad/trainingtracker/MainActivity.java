@@ -9,9 +9,9 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
 
     private TextView totalDistance, totalDuration, averageSpeed, currentSpeedTV, trackerState, timerTextView;
 
-    private Timer timer;
+    private Stopwatch stopwatch;
     private NotificationManager notificationManager;
 
     public MainActivity() {
@@ -63,13 +63,13 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
 
         initLocationListener();
 
-        Handler handler = new Handler();
-        timer = new Timer(this, handler);
-        handler.post(timer);
-        timer.start();
+
+        stopwatch = new Stopwatch(this);
+        Thread stopwatchThread = new Thread(stopwatch);
+        stopwatchThread.start();
+        stopwatch.start();
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        showNotification(0);
     }
 
     private void setState(TrackerState newState) {
@@ -181,14 +181,15 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
     }
 
     @Override
-    public void updateTime(long sec) {
-        timerTextView.setText(Long.toString(sec));
-        showNotification(sec);
+    public void updateTime(StopwatchViewModel viewModel) {
+        String timerValue = viewModel.toString();
+        timerTextView.setText(timerValue);
+        showNotification(timerValue);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK/* && state==TrackerState.RUNNING*/) {
+        if (keyCode == KeyEvent.KEYCODE_BACK /*&& state==TrackerState.RUNNING*/) {
             showAlertCloseApplication();
             return true;
         }
@@ -238,18 +239,18 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
         alert.show();
     }
 
-    private void showNotification(long sec) {
+    private void showNotification(String timerValue) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_plusone_small_off_client)
                         .setContentTitle("Total Time")
-                        .setContentText(Long.toString(sec));
+                        .setContentText(timerValue);
 
         notificationManager.notify(123, mBuilder.build());
     }
 
     public void stop() {
-        timer.stop();
+        stopwatch.stop();
         notificationManager.cancel(123);
     }
 

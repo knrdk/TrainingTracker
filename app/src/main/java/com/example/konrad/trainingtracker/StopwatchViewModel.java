@@ -3,17 +3,17 @@ package com.example.konrad.trainingtracker;
 /**
  * Created by Comarch on 2015-01-26.
  */
-public class TimerViewModel {
+public class StopwatchViewModel {
     private int hours;
     private int minutes;
     private int seconds;
-    private int miliseconds;
 
-    public TimerViewModel(int h, int m, int s, int ms) {
-        hours = h;
-        minutes = m;
-        seconds = s;
-        miliseconds = ms;
+    public StopwatchViewModel(long miliseconds){
+        int totalSeconds = (int)miliseconds/1000;
+        seconds = totalSeconds % 60;
+        int totalMinutes = (int)totalSeconds/60;
+        minutes = totalMinutes % 60;
+        hours = (int)totalMinutes/60;
     }
 
     public int getHours() {
@@ -28,8 +28,10 @@ public class TimerViewModel {
         return seconds;
     }
 
-    public int getMiliseconds() {
-        return miliseconds;
+    @Override
+    public String toString() {
+        final String FORMAT = "%02d";
+        return String.format(FORMAT, getHours()) + ":" + String.format(FORMAT,getMinutes()) + ":" + String.format(FORMAT,getSeconds());
     }
 
     @Override
@@ -37,10 +39,9 @@ public class TimerViewModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TimerViewModel that = (TimerViewModel) o;
+        StopwatchViewModel that = (StopwatchViewModel) o;
 
         if (hours != that.hours) return false;
-        if (miliseconds != that.miliseconds) return false;
         if (minutes != that.minutes) return false;
         if (seconds != that.seconds) return false;
 
@@ -52,7 +53,6 @@ public class TimerViewModel {
         int result = hours;
         result = 31 * result + minutes;
         result = 31 * result + seconds;
-        result = 31 * result + miliseconds;
         return result;
     }
 }
