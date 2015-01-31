@@ -65,8 +65,6 @@ public class MainActivity extends Activity implements SpacetimeListener, TimerLi
 
 
         stopwatch = new Stopwatch(this);
-        Thread stopwatchThread = new Thread(stopwatch);
-        stopwatchThread.start();
         stopwatch.start();
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
