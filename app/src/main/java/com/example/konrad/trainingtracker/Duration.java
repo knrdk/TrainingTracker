@@ -3,17 +3,21 @@ package com.example.konrad.trainingtracker;
 /**
  * Created by Comarch on 2015-01-26.
  */
-public class StopwatchViewModel {
+public class Duration {
     private int hours;
     private int minutes;
     private int seconds;
 
-    public StopwatchViewModel(long miliseconds){
-        int totalSeconds = (int)miliseconds/1000;
+    public Duration() {
+        this(0);
+    }
+
+    public Duration(long miliseconds) {
+        int totalSeconds = (int) miliseconds / 1000;
         seconds = totalSeconds % 60;
-        int totalMinutes = (int)totalSeconds/60;
+        int totalMinutes = (int) totalSeconds / 60;
         minutes = totalMinutes % 60;
-        hours = (int)totalMinutes/60;
+        hours = (int) totalMinutes / 60;
     }
 
     public int getHours() {
@@ -31,7 +35,7 @@ public class StopwatchViewModel {
     @Override
     public String toString() {
         final String FORMAT = "%02d";
-        return String.format(FORMAT, getHours()) + ":" + String.format(FORMAT,getMinutes()) + ":" + String.format(FORMAT,getSeconds());
+        return String.format(FORMAT, getHours()) + ":" + String.format(FORMAT, getMinutes()) + ":" + String.format(FORMAT, getSeconds());
     }
 
     @Override
@@ -39,7 +43,7 @@ public class StopwatchViewModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        StopwatchViewModel that = (StopwatchViewModel) o;
+        Duration that = (Duration) o;
 
         if (hours != that.hours) return false;
         if (minutes != that.minutes) return false;

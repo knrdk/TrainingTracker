@@ -1,22 +1,16 @@
 package com.example.konrad.trainingtracker;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.SystemClock;
-import android.util.Log;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by Comarch on 2015-01-26.
  */
 public class Stopwatch implements Runnable {
-    private TimerListener listener;
+    private DurationListener listener;
     private Activity activity;
 
-    private StopwatchViewModel lastValue;
+    private Duration lastValue;
 
     private boolean isRunning = false;
     private boolean isStopped = false;
@@ -26,9 +20,9 @@ public class Stopwatch implements Runnable {
 
     private Thread thread = new Thread(this);
 
-    public Stopwatch(TimerListener listener) {
+    public Stopwatch(DurationListener listener) {
         this.listener = listener;
-        if(listener instanceof Activity){
+        if (listener instanceof Activity) {
             activity = (Activity) listener;
         }
         thread.start();
@@ -44,40 +38,41 @@ public class Stopwatch implements Runnable {
         aggregatedMiliseconds += getCurrentMiliseconds();
     }
 
-    public void stop(){
+    public void stop() {
         pause();
         isStopped = true;
     }
 
-    private long getCurrentMiliseconds(){
+    private long getCurrentMiliseconds() {
         return SystemClock.uptimeMillis() - startTime;
     }
 
     @Override
     public void run() {
-        while(!isStopped){
+        while (!isStopped) {
             if (isRunning) {
                 notifyListener();
             }
             try {
                 Thread.sleep(50);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
         }
     }
 
     private void notifyListener() {
         long totalMiliseconds = aggregatedMiliseconds + getCurrentMiliseconds();
-        final StopwatchViewModel newValue = new StopwatchViewModel(totalMiliseconds);
-        if(!newValue.equals(lastValue)){
-            if(activity!=null){
+        final Duration newValue = new Duration(totalMiliseconds);
+        if (!newValue.equals(lastValue)) {
+            if (activity != null) {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        listener.updateTime(newValue);
+                        listener.setDuration(newValue);
                     }
                 });
-            }else{
-                listener.updateTime(newValue);
+            } else {
+                listener.setDuration(newValue);
             }
             lastValue = newValue;
         }

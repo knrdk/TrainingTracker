@@ -41,26 +41,26 @@ public class Training {
         return distance + currentSegmentDistance;
     }
 
-    public double getDuration() {
+    public long getDuration() {
         long currentDuration = 0;
         if (currentSegment != null) {
             currentDuration = currentSegment.getDuration();
         }
-        return (double) (duration + currentDuration) / 1000;
+        return (duration + currentDuration);
     }
 
     public double getAverageSpeed() {
-        double duration = getDuration();
+        double duration = (double) getDuration() / 1000;
         if (duration > 0)
-            return getDistance() / duration * 3.6;
+            return getDistance() / duration;
         else
             return 0;
     }
 
-    public double getCurrentSpeed(){
-        if(currentSegment!=null){
+    public double getCurrentSpeed() {
+        if (currentSegment != null) {
             return currentSegment.getCurrentSpeed();
-        }else{
+        } else {
             return 0;
         }
     }

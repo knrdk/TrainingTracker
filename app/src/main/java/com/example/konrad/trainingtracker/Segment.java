@@ -48,15 +48,15 @@ public class Segment {
         return duration;
     }
 
-    public double getCurrentSpeed(){
+    public double getCurrentSpeed() {
         return currentSpeed;
     }
 
-    private static double getSpeed(double distance, long duration){
-        double durationInSeconds = (double)duration/1000;
-        if(durationInSeconds>0){
-            return distance/durationInSeconds;
-        }else{
+    private static double getSpeed(double distance, long duration) {
+        double durationInSeconds = (double) duration / 1000;
+        if (durationInSeconds > 0) {
+            return distance / durationInSeconds;
+        } else {
             return 0;
         }
     }
