@@ -1,4 +1,4 @@
-package com.example.konrad.trainingtracker.com.example.konrad.trainingtracker.datastore;
+package com.example.konrad.trainingtracker.datastore;
 
 import android.provider.BaseColumns;
 

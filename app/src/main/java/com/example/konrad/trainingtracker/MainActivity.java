@@ -1,5 +1,6 @@
 package com.example.konrad.trainingtracker;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -9,19 +10,23 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.konrad.trainingtracker.com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
-import com.example.konrad.trainingtracker.com.example.konrad.trainingtracker.fragments.GpsReadyFragment;
-import com.example.konrad.trainingtracker.com.example.konrad.trainingtracker.fragments.PausedFragment;
-import com.example.konrad.trainingtracker.com.example.konrad.trainingtracker.fragments.RunningFragment;
-import com.example.konrad.trainingtracker.com.example.konrad.trainingtracker.fragments.WaitingForGpsFragment;
+import com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
+import com.example.konrad.trainingtracker.fragments.GpsReadyFragment;
+import com.example.konrad.trainingtracker.fragments.PausedFragment;
+import com.example.konrad.trainingtracker.fragments.RunningFragment;
+import com.example.konrad.trainingtracker.fragments.WaitingForGpsFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -30,7 +35,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 
-public class MainActivity extends FragmentActivity implements SpacetimeListener, DurationListener {
+public class MainActivity extends ActionBarActivity implements SpacetimeListener, DurationListener {
     private static final String WAKE_LOCK_TAG = "TrainingTrackerWakeLockTag";
     private static final int MAP_CAMERA_ZOOM = 15;
     private PowerManager.WakeLock wakeLock;
@@ -63,6 +68,32 @@ public class MainActivity extends FragmentActivity implements SpacetimeListener,
         stopwatch = new Stopwatch(this);
 
         database = new TrainingDBAdapter(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }else if(id == R.id.action_history){
+            Intent intent = new Intent(MainActivity.this, TrainingListActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initializeViewFields() {
