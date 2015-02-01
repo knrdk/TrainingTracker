@@ -12,10 +12,12 @@ import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.konrad.trainingtracker.com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
 import com.example.konrad.trainingtracker.com.example.konrad.trainingtracker.fragments.GpsReadyFragment;
 import com.example.konrad.trainingtracker.com.example.konrad.trainingtracker.fragments.PausedFragment;
 import com.example.konrad.trainingtracker.com.example.konrad.trainingtracker.fragments.RunningFragment;
@@ -37,6 +39,8 @@ public class MainActivity extends FragmentActivity implements SpacetimeListener,
     private TextView totalDistance, totalDuration, averageSpeed, currentSpeedTV, trackerState;
     private NotificationManager notificationManager;
 
+    private TrainingDBAdapter database;
+
     private TrackerState state;
     private Training training = new Training();
     private Stopwatch stopwatch;
@@ -57,6 +61,8 @@ public class MainActivity extends FragmentActivity implements SpacetimeListener,
         setDuration(new Duration());
 
         stopwatch = new Stopwatch(this);
+
+        database = new TrainingDBAdapter(this);
     }
 
     private void initializeViewFields() {
@@ -177,6 +183,8 @@ public class MainActivity extends FragmentActivity implements SpacetimeListener,
             stopwatch.stop();
             setState(TrackerState.STOPPED);
             wakeLock.release();
+            long id = database.insertTraining(training);
+            Log.d("NEW TRAINING ID", Long.toString(id));
         }
     }
 
