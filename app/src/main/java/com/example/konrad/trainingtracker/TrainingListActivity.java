@@ -4,14 +4,24 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
 
 
 public class TrainingListActivity extends ActionBarActivity {
+    private TrainingDBAdapter database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training_list);
+
+        database = new TrainingDBAdapter(this);
+
+        TrainingListCursorAdapter adapter = new TrainingListCursorAdapter(this,database.getAllTrainings());
+        ListView lv = (ListView) findViewById(R.id.trainings_LV);
+        lv.setAdapter(adapter);
     }
 
 

@@ -42,7 +42,7 @@ public class TrainingContract {
 
     public static abstract class TrainingEntry implements BaseColumns {
         public static final String TABLE_NAME = "training";
-        public static final String COLUMN_NAME_ID = "id";
+        public static final String COLUMN_NAME_ID = "_id";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_DISTANCE = "distance";
@@ -51,13 +51,13 @@ public class TrainingContract {
 
     public static abstract class SegmentEntry implements BaseColumns{
         public static final String TABLE_NAME = "segment";
-        public static final String COLUMN_NAME_ID = "id";
+        public static final String COLUMN_NAME_ID = "_id";
         public static final String COLUMNN_NAME_TRAINING_ID = "training_id";
     }
 
     public static abstract class PointEntry implements BaseColumns{
         public static final String TABLE_NAME = "point";
-        public static final String COLUMN_NAME_ID = "id";
+        public static final String COLUMN_NAME_ID = "_id";
         public static final String COLUMN_NAME_SEGMENT_ID = "segment_id";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_LATITUDE = "latitude";
