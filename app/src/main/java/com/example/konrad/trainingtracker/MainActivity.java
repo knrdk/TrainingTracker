@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
 import com.example.konrad.trainingtracker.fragments.GpsReadyFragment;
@@ -232,8 +233,16 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
             setState(TrackerState.STOPPED);
             wakeLock.release();
             long id = database.insertTraining(training);
-            Log.d("NEW TRAINING ID", Long.toString(id));
+
+            openTrainingDetails(id);
         }
+    }
+
+    private void openTrainingDetails(long id){
+        Intent intent = new Intent(MainActivity.this,
+                TrainingDetailsActivity.class);
+        intent.putExtra(TrainingDetailsActivity.INTENT_ARGUMENT_ID, id);
+        startActivity(intent);
     }
 
     @Override
@@ -246,7 +255,7 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK /*&& state==TrackerState.RUNNING*/) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && state==TrackerState.RUNNING) {
             showAlertCloseApplication();
             return true;
         }

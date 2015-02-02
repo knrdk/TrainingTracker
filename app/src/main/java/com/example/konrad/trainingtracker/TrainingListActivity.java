@@ -1,16 +1,23 @@
 package com.example.konrad.trainingtracker;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.konrad.trainingtracker.datastore.TrainingContract;
 import com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
 
 
-public class TrainingListActivity extends ActionBarActivity {
+public class TrainingListActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
     private TrainingDBAdapter database;
+    TrainingListCursorAdapter cursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +26,10 @@ public class TrainingListActivity extends ActionBarActivity {
 
         database = new TrainingDBAdapter(this);
 
-        TrainingListCursorAdapter adapter = new TrainingListCursorAdapter(this,database.getAllTrainings());
+        cursorAdapter = new TrainingListCursorAdapter(this,database.getAllTrainings());
         ListView lv = (ListView) findViewById(R.id.trainings_LV);
-        lv.setAdapter(adapter);
+        lv.setAdapter(cursorAdapter);
+        lv.setOnItemClickListener(this);
     }
 
 
@@ -45,5 +53,17 @@ public class TrainingListActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        openTrainingDetails(id);
+    }
+
+    private void openTrainingDetails(long id){
+        Intent intent = new Intent(TrainingListActivity.this,
+                TrainingDetailsActivity.class);
+        intent.putExtra(TrainingDetailsActivity.INTENT_ARGUMENT_ID,id);
+        startActivity(intent);
     }
 }

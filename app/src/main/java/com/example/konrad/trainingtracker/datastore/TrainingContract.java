@@ -17,6 +17,7 @@ public class TrainingContract {
                     TrainingEntry.COLUMN_NAME_ID + T_INTEGER + " PRIMARY KEY," +
                     TrainingEntry.COLUMN_NAME_TITLE + T_TEXT + "," +
                     TrainingEntry.COLUMN_NAME_DESCRIPTION + T_TEXT + "," +
+                    TrainingEntry.COLUMN_NAME_DATE + T_TEXT + "," +
                     TrainingEntry.COLUMN_NAME_DISTANCE + T_REAL + "," +
                     TrainingEntry.COLUMN_NAME_DURATION + T_REAL + " )";
 
@@ -45,6 +46,7 @@ public class TrainingContract {
         public static final String COLUMN_NAME_ID = "_id";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
+        public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_DISTANCE = "distance";
         public static final String COLUMN_NAME_DURATION = "duration";
     }

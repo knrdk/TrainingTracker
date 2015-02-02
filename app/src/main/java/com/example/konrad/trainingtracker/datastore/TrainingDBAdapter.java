@@ -11,15 +11,22 @@ import android.util.Log;
 import com.example.konrad.trainingtracker.Segment;
 import com.example.konrad.trainingtracker.SpacetimePoint;
 import com.example.konrad.trainingtracker.Training;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * Created by Konrad on 2015-02-01.
  */
 public class TrainingDBAdapter {
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 7;
     private static final String DATABASE_NAME = "Training.db";
     private TrainingDbHelper dbHelper;
 
+    private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS");
 
     public TrainingDBAdapter(Context context){
         dbHelper = new TrainingDbHelper(context);
@@ -32,6 +39,7 @@ public class TrainingDBAdapter {
         long id;
         try {
             ContentValues values = new ContentValues();
+            values.put(TrainingContract.TrainingEntry.COLUMN_NAME_DATE, formatDate(new Date()));
             values.put(TrainingContract.TrainingEntry.COLUMN_NAME_DISTANCE, training.getDistance());
             values.put(TrainingContract.TrainingEntry.COLUMN_NAME_DURATION, training.getDuration());
 
@@ -61,7 +69,7 @@ public class TrainingDBAdapter {
     private void insertPoint(SpacetimePoint point, long segmentId, SQLiteDatabase db){
         ContentValues values = new ContentValues();
         values.put(TrainingContract.PointEntry.COLUMN_NAME_SEGMENT_ID, segmentId);
-        values.put(TrainingContract.PointEntry.COLUMN_NAME_DATE, point.getDate().toString());
+        values.put(TrainingContract.PointEntry.COLUMN_NAME_DATE, formatDate(point.getDate()));
         values.put(TrainingContract.PointEntry.COLUMN_NAME_LATITUDE, point.getLocation().latitude);
         values.put(TrainingContract.PointEntry.COLUMN_NAME_LONGITUDE, point.getLocation().longitude);
         values.put(TrainingContract.PointEntry.COLUMN_NAME_ACCURACY, point.getAccuracy());
@@ -72,6 +80,7 @@ public class TrainingDBAdapter {
     public Cursor getAllTrainings(){
         String[] projection = {
                 TrainingContract.TrainingEntry.COLUMN_NAME_ID,
+                TrainingContract.TrainingEntry.COLUMN_NAME_DATE,
                 TrainingContract.TrainingEntry.COLUMN_NAME_DISTANCE,
                 TrainingContract.TrainingEntry.COLUMN_NAME_DURATION
         };
@@ -88,6 +97,74 @@ public class TrainingDBAdapter {
                 null,
                 sortOrder
         );
+    }
+
+    public Training getTraining(long id){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String[] projection = {TrainingContract.SegmentEntry.COLUMN_NAME_ID};
+        String selection = TrainingContract.SegmentEntry.COLUMNN_NAME_TRAINING_ID + " = ?";
+        String[] selectionArgs = {Long.toString(id)};
+        String sortOrder = TrainingContract.SegmentEntry.COLUMN_NAME_ID;
+
+        Cursor c = db.query(
+                TrainingContract.SegmentEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        Training training = new Training();
+
+        while(c.moveToNext()){
+            long segmentId = c.getLong(c.getColumnIndex(TrainingContract.SegmentEntry.COLUMN_NAME_ID));
+            training.addNewSegment();
+            for(SpacetimePoint point : getPointsForSegment(segmentId, db)){
+                training.addNewPoint(point);
+            }
+        }
+        return training;
+    }
+
+    public LinkedList<SpacetimePoint> getPointsForSegment(long id, SQLiteDatabase db){
+        String[] projection = {
+                TrainingContract.PointEntry.COLUMN_NAME_LATITUDE,
+                TrainingContract.PointEntry.COLUMN_NAME_LONGITUDE,
+                TrainingContract.PointEntry.COLUMN_NAME_ACCURACY,
+                TrainingContract.PointEntry.COLUMN_NAME_DATE
+        };
+        String selection = TrainingContract.PointEntry.COLUMN_NAME_SEGMENT_ID + " = ?";
+        String[] selectionArgs = {Long.toString(id)};
+        String sortOrder = TrainingContract.PointEntry.COLUMN_NAME_ID;
+
+        Cursor c = db.query(
+                TrainingContract.PointEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        LinkedList<SpacetimePoint> output = new LinkedList<>();
+
+        while(c.moveToNext()){
+            double latitude = c.getDouble(c.getColumnIndex(TrainingContract.PointEntry.COLUMN_NAME_LATITUDE));
+            double longitude = c.getDouble(c.getColumnIndex(TrainingContract.PointEntry.COLUMN_NAME_LONGITUDE));
+            float accuracy = c.getFloat(c.getColumnIndex(TrainingContract.PointEntry.COLUMN_NAME_ACCURACY));
+            String dateString = c.getString(c.getColumnIndex(TrainingContract.PointEntry.COLUMN_NAME_DATE));
+
+            Date date = parseDate(dateString);
+            LatLng location = new LatLng(latitude,longitude);
+            SpacetimePoint point = new SpacetimePoint(date,location,accuracy);
+
+            output.add(point);
+        }
+
+        return output;
     }
 
     private class TrainingDbHelper extends SQLiteOpenHelper {
@@ -108,6 +185,18 @@ public class TrainingDBAdapter {
             db.execSQL(TrainingContract.DELETE_SEGMENT);
             db.execSQL(TrainingContract.DELETE_TRAINING);
             onCreate(db);
+        }
+    }
+
+    private static String formatDate(Date date){
+        return sdf.format(date);
+    }
+
+    public static Date parseDate(String date){
+        try {
+            return sdf.parse(date);
+        } catch (ParseException e) {
+            return new Date();
         }
     }
 }

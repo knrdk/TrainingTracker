@@ -41,6 +41,10 @@
             android:name=".TrainingListActivity"
             android:label="@string/title_activity_training_list" >
         </activity>
+        <activity
+            android:name=".TrainingDetailsActivity"
+            android:label="@string/title_activity_training_details" >
+        </activity>
     </application>
 
 </manifest>
