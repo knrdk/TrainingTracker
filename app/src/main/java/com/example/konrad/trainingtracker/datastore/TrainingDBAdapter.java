@@ -5,14 +5,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Point;
+import android.util.Log;
 
+import com.example.konrad.trainingtracker.Segment;
+import com.example.konrad.trainingtracker.SpacetimePoint;
 import com.example.konrad.trainingtracker.Training;
 
 /**
  * Created by Konrad on 2015-02-01.
  */
 public class TrainingDBAdapter {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "Training.db";
     private TrainingDbHelper dbHelper;
 
@@ -23,12 +27,46 @@ public class TrainingDBAdapter {
 
     public long insertTraining(Training training){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
 
+        long id;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(TrainingContract.TrainingEntry.COLUMN_NAME_DISTANCE, training.getDistance());
+            values.put(TrainingContract.TrainingEntry.COLUMN_NAME_DURATION, training.getDuration());
+
+            id = db.insert(TrainingContract.TrainingEntry.TABLE_NAME, null, values);
+
+            for(Segment segment: training.getSegments()){
+                insertSegment(segment, id, db);
+            }
+
+            db.setTransactionSuccessful();
+        }finally {
+            db.endTransaction();
+        }
+        return id;
+    }
+
+    private void insertSegment(Segment segment, long trainingId, SQLiteDatabase db){
         ContentValues values = new ContentValues();
-        values.put(TrainingContract.TrainingEntry.COLUMN_NAME_DISTANCE, training.getDistance());
-        values.put(TrainingContract.TrainingEntry.COLUMN_NAME_DURATION, training.getDuration());
+        values.put(TrainingContract.SegmentEntry.COLUMNN_NAME_TRAINING_ID, trainingId);
+        long id = db.insert(TrainingContract.SegmentEntry.TABLE_NAME, null, values);
 
-        return db.insert(TrainingContract.TrainingEntry.TABLE_NAME,null,values);
+        for(SpacetimePoint point: segment.getPoints()){
+            insertPoint(point, id, db);
+        }
+    }
+
+    private void insertPoint(SpacetimePoint point, long segmentId, SQLiteDatabase db){
+        ContentValues values = new ContentValues();
+        values.put(TrainingContract.PointEntry.COLUMN_NAME_SEGMENT_ID, segmentId);
+        values.put(TrainingContract.PointEntry.COLUMN_NAME_DATE, point.getDate().toString());
+        values.put(TrainingContract.PointEntry.COLUMN_NAME_LATITUDE, point.getLocation().latitude);
+        values.put(TrainingContract.PointEntry.COLUMN_NAME_LONGITUDE, point.getLocation().longitude);
+        values.put(TrainingContract.PointEntry.COLUMN_NAME_ACCURACY, point.getAccuracy());
+
+        db.insert(TrainingContract.PointEntry.TABLE_NAME, null, values);
     }
 
     public Cursor getAllTrainings(){

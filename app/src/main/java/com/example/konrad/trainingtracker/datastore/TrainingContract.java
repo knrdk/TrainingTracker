@@ -14,29 +14,29 @@ public class TrainingContract {
 
     public static final String CREATE_TRAINING =
             "CREATE TABLE " + TrainingEntry.TABLE_NAME + " (" +
-            TrainingEntry.COLUMN_NAME_ID + T_INTEGER + " PRIMARY KEY," +
-            TrainingEntry.COLUMN_NAME_TITLE + T_TEXT + "," +
-            TrainingEntry.COLUMN_NAME_DESCRIPTION + T_TEXT + "," +
-            TrainingEntry.COLUMN_NAME_DISTANCE + T_REAL + "," +
-            TrainingEntry.COLUMN_NAME_DURATION + T_REAL + " )";
+                    TrainingEntry.COLUMN_NAME_ID + T_INTEGER + " PRIMARY KEY," +
+                    TrainingEntry.COLUMN_NAME_TITLE + T_TEXT + "," +
+                    TrainingEntry.COLUMN_NAME_DESCRIPTION + T_TEXT + "," +
+                    TrainingEntry.COLUMN_NAME_DISTANCE + T_REAL + "," +
+                    TrainingEntry.COLUMN_NAME_DURATION + T_REAL + " )";
 
     public static final String DELETE_TRAINING = "DROP TABLE IF EXISTS " + TrainingEntry.TABLE_NAME;
 
     public static final String CREATE_SEGMENT =
             "CREATE TABLE " + SegmentEntry.TABLE_NAME + " (" +
-             SegmentEntry.COLUMN_NAME_ID + T_INTEGER + " PRIMARY KEY," +
-             SegmentEntry.COLUMNN_NAME_TRAINING_ID + T_INTEGER + " )";
+                    SegmentEntry.COLUMN_NAME_ID + T_INTEGER + " PRIMARY KEY," +
+                    SegmentEntry.COLUMNN_NAME_TRAINING_ID + T_INTEGER + " )";
 
     public static final String DELETE_SEGMENT = "DROP TABLE IF EXISTS " + SegmentEntry.TABLE_NAME;
 
     public static final String CREATE_POINT =
             "CREATE TABLE " + PointEntry.TABLE_NAME + " (" +
-            PointEntry.COLUMN_NAME_ID + T_INTEGER + " PRIMARY KEY," +
-            PointEntry.COLUMN_NAME_SEGMENT_ID + T_INTEGER + "," +
-            PointEntry.COLUMN_NAME_DATE + T_TEXT + "," +
-            PointEntry.COLUMN_NAME_LATITUDE + T_REAL + "," +
-            PointEntry.COLUMN_NAME_LONGITUDE + T_REAL + "," +
-            PointEntry.COLUMN_NAME_ACCURACY + T_REAL + " )";
+                    PointEntry.COLUMN_NAME_ID + T_INTEGER + " PRIMARY KEY," +
+                    PointEntry.COLUMN_NAME_SEGMENT_ID + T_INTEGER + "," +
+                    PointEntry.COLUMN_NAME_DATE + T_TEXT + "," +
+                    PointEntry.COLUMN_NAME_LATITUDE + T_REAL + "," +
+                    PointEntry.COLUMN_NAME_LONGITUDE + T_REAL + "," +
+                    PointEntry.COLUMN_NAME_ACCURACY + T_REAL + " )";
 
     public static final String DELETE_POINT = "DROP TABLE IF EXISTS " + PointEntry.TABLE_NAME;
 
@@ -49,13 +49,13 @@ public class TrainingContract {
         public static final String COLUMN_NAME_DURATION = "duration";
     }
 
-    public static abstract class SegmentEntry implements BaseColumns{
+    public static abstract class SegmentEntry implements BaseColumns {
         public static final String TABLE_NAME = "segment";
         public static final String COLUMN_NAME_ID = "_id";
         public static final String COLUMNN_NAME_TRAINING_ID = "training_id";
     }
 
-    public static abstract class PointEntry implements BaseColumns{
+    public static abstract class PointEntry implements BaseColumns {
         public static final String TABLE_NAME = "point";
         public static final String COLUMN_NAME_ID = "_id";
         public static final String COLUMN_NAME_SEGMENT_ID = "segment_id";
