@@ -1,6 +1,5 @@
 package com.example.konrad.trainingtracker;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -10,9 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -20,31 +17,29 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
 import com.example.konrad.trainingtracker.fragments.GpsReadyFragment;
 import com.example.konrad.trainingtracker.fragments.PausedFragment;
 import com.example.konrad.trainingtracker.fragments.RunningFragment;
+import com.example.konrad.trainingtracker.fragments.TrainingInfoFragment;
 import com.example.konrad.trainingtracker.fragments.WaitingForGpsFragment;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 
 public class MainActivity extends ActionBarActivity implements SpacetimeListener, DurationListener {
     private static final String WAKE_LOCK_TAG = "TrainingTrackerWakeLockTag";
-    private static final int MAP_CAMERA_ZOOM = 15;
     private PowerManager.WakeLock wakeLock;
+    LocationManager locationManager;
+    private GpsLocationListener locationListener;
 
-    private GoogleMap map;
-    private TextView totalDistance, totalDuration, averageSpeed, currentSpeedTV, trackerState;
     private NotificationManager notificationManager;
 
     private TrainingDBAdapter database;
+
+    private boolean isVisible = false;
+    private boolean shouldUpdateStateFragment = false;
 
     private TrackerState state;
     private Training training = new Training();
@@ -52,22 +47,37 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
     private boolean shouldStartStopwatch;
     private Duration duration;
 
+    TrainingInfoFragment trainingInfoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initializeWakeLock();
-        initializeViewFields();
+        initializeTrainingInfoFragment();
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        initializeWakeLock();
         initializeLocationListener();
         initializeState();
-        setDuration(new Duration());
 
         stopwatch = new Stopwatch(this);
-
         database = new TrainingDBAdapter(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isVisible = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isVisible = true;
+        if(shouldUpdateStateFragment){
+            updateStateFragment();
+        }
     }
 
     @Override
@@ -96,15 +106,9 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
         return super.onOptionsItemSelected(item);
     }
 
-    private void initializeViewFields() {
-        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-
-        totalDistance = (TextView) findViewById(R.id.totalDistance);
-        totalDuration = (TextView) findViewById(R.id.totalDuration);
-        currentSpeedTV = (TextView) findViewById(R.id.currentSpeed);
-        averageSpeed = (TextView) findViewById(R.id.averageSpeed);
-
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    private void initializeTrainingInfoFragment() {
+        trainingInfoFragment = (TrainingInfoFragment) getFragmentManager().findFragmentById(R.id.training_info);
+        trainingInfoFragment.setTraining(training);
     }
 
     private void initializeState() {
@@ -119,37 +123,51 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
     }
 
     private void initializeLocationListener() {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             showAlertGpsDisabled();
         }
-        initLocation(locationManager);
 
-        GpsLocationListener locationListener = new GpsLocationListener(this);
-        locationManager.requestLocationUpdates(GPS_PROVIDER, 1, 0.1f, locationListener); //TODO: delete magic numbers
+        setLastLocation();
+        requestLocationUpdates();
     }
 
-    private void initLocation(LocationManager locationManager) {
+    private void setLastLocation(){
         Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (lastLocation != null) {
             LatLng lastLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, MAP_CAMERA_ZOOM));
+            trainingInfoFragment.updateLastLocation(lastLatLng);
         }
     }
 
+    private void requestLocationUpdates(){
+        locationListener = new GpsLocationListener(this);
+        locationManager.requestLocationUpdates(GPS_PROVIDER, 1, 0.1f, locationListener); //TODO: delete magic numbers
+    }
+
     private void setState(TrackerState newState) {
-        if (newState == TrackerState.WAITING_FOR_GPS) {
+        state = newState;
+
+        if(isVisible){
+            updateStateFragment();
+        }else{
+            shouldUpdateStateFragment=true;
+        }
+    }
+
+    private void updateStateFragment(){
+        if (state == TrackerState.WAITING_FOR_GPS) {
             throw new IllegalArgumentException("Can't set WAITING_FOR_GPS state");
         }
-        state = newState;
+
         Fragment fragment = null;
-        if (newState == TrackerState.GPS_READY) {
+        if (state == TrackerState.GPS_READY) {
             fragment = new GpsReadyFragment();
-        }else if(newState == TrackerState.RUNNING){
+        }else if(state == TrackerState.RUNNING){
             fragment = new RunningFragment();
         }
-        else if(newState == TrackerState.PAUSED){
+        else if(state == TrackerState.PAUSED){
             fragment = new PausedFragment();
         }
 
@@ -176,8 +194,7 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
             }
 
             training.addNewPoint(x);
-            updateMap();
-            updateInformation();
+            trainingInfoFragment.updateTraining();
         }
     }
 
@@ -219,43 +236,11 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
         }
     }
 
-    private void updateMap() {
-        updateLastLocation();
-        updateTrack();
-    }
-
-    private void updateLastLocation() {
-        LatLng last = training.getLastLocation();
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(last, MAP_CAMERA_ZOOM));
-    }
-
-    private void updateTrack() {
-        for (Segment segment : training.getSegments()) {
-            PolylineOptions polylineOptions = new PolylineOptions().geodesic(true);
-            for (SpacetimePoint point : segment.getPoints()) {
-                polylineOptions.add(point.getLocation());
-            }
-            map.addPolyline(polylineOptions);
-        }
-    }
-
-    private void updateInformation() {
-        double distance = training.getDistance();
-        totalDistance.setText(Double.toString(distance));
-
-        double currentSpeed = training.getCurrentSpeed();
-        currentSpeedTV.setText(Double.toString(currentSpeed));
-
-        double speed = training.getAverageSpeed();
-        averageSpeed.setText(Double.toString(speed));
-    }
-
     @Override
     public void setDuration(Duration newValue) {
         duration = newValue;
-
+        trainingInfoFragment.setDuration(duration);
         String timerValue = duration.toString();
-        totalDuration.setText(timerValue);
         showNotification(timerValue);
     }
 
@@ -277,7 +262,6 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         stop();
-                        finish();
                     }
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NIE",
@@ -322,8 +306,11 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
     }
 
     public void stop() {
+        locationListener.unregister();
+        locationManager.removeUpdates(locationListener);
         stopwatch.stop();
         notificationManager.cancel(123);
+        finish();
     }
 
     private enum TrackerState {

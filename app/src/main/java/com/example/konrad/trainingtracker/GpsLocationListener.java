@@ -22,6 +22,10 @@ public class GpsLocationListener implements LocationListener {
         observer = x;
     }
 
+    public void unregister(){
+        observer = null;
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         float accuracy = location.getAccuracy();
@@ -33,7 +37,7 @@ public class GpsLocationListener implements LocationListener {
             }
         }
 
-        if (isGpsFixed) {
+        if (observer != null && isGpsFixed) {
             LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
             SpacetimePoint current = new SpacetimePoint(currentLocation, accuracy);
             if (shouldNotify(current)) {

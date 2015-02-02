@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.konrad.trainingtracker.fragments.TrainingInfoFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dystans: "
+            android:id="@+id/distanceDescription"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/totalDistance"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:numeric="decimal"
+            android:layout_toRightOf="@id/distanceDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/durationDescription"
+            android:text="Czas: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@id/distanceDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/totalDuration"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@id/distanceDescription"
+            android:layout_toRightOf="@id/durationDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/averageSpeedDescription"
+            android:text="Prędkość średnia: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@id/durationDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/averageSpeed"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_toRightOf="@id/averageSpeedDescription"
+            android:layout_below="@id/durationDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/currentSpeedDescription"
+            android:text="Prędkość chwilowa: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@id/averageSpeedDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/currentSpeed"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_toRightOf="@id/currentSpeedDescription"
+            android:layout_below="@id/averageSpeedDescription" />
+
+    </RelativeLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.MapFragment" />
+</LinearLayout>
