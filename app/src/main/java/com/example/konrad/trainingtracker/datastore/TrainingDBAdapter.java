@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Point;
 import android.util.Log;
@@ -101,34 +102,46 @@ public class TrainingDBAdapter {
 
     public Training getTraining(long id){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String[] projection = {TrainingContract.SegmentEntry.COLUMN_NAME_ID};
-        String selection = TrainingContract.SegmentEntry.COLUMNN_NAME_TRAINING_ID + " = ?";
-        String[] selectionArgs = {Long.toString(id)};
-        String sortOrder = TrainingContract.SegmentEntry.COLUMN_NAME_ID;
-
-        Cursor c = db.query(
-                TrainingContract.SegmentEntry.TABLE_NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder
-        );
 
         Training training = new Training();
 
-        while(c.moveToNext()){
-            long segmentId = c.getLong(c.getColumnIndex(TrainingContract.SegmentEntry.COLUMN_NAME_ID));
+        for(Long segmentId : getSegmentsId(id,db)){
             training.addNewSegment();
             for(SpacetimePoint point : getPointsForSegment(segmentId, db)){
                 training.addNewPoint(point);
             }
         }
+
         return training;
     }
 
-    public LinkedList<SpacetimePoint> getPointsForSegment(long id, SQLiteDatabase db){
+    public void deleteTraining(long id){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String selection = TrainingContract.TrainingEntry.COLUMN_NAME_ID + " = ?";
+        String selectionArgs[] = {Long.toString(id)};
+        db.delete(TrainingContract.TrainingEntry.TABLE_NAME, selection, selectionArgs);
+
+        for(Long segmentId : getSegmentsId(id, db)){
+            deleteSegment(segmentId, db);
+        }
+    }
+
+    private void deleteSegment(long id, SQLiteDatabase db){
+        String selection = TrainingContract.SegmentEntry.COLUMN_NAME_ID + " = ?";
+        String selectionArgs[] = {Long.toString(id)};
+        db.delete(TrainingContract.SegmentEntry.TABLE_NAME, selection, selectionArgs);
+
+        deletePointsForSegment(id,db);
+    }
+
+    private void deletePointsForSegment(long segmentId, SQLiteDatabase db){
+        String selection = TrainingContract.PointEntry.COLUMN_NAME_SEGMENT_ID + " = ?";
+        String selectionArgs[] = {Long.toString(segmentId)};
+        db.delete(TrainingContract.PointEntry.TABLE_NAME, selection, selectionArgs);
+    }
+
+    private LinkedList<SpacetimePoint> getPointsForSegment(long id, SQLiteDatabase db){
         String[] projection = {
                 TrainingContract.PointEntry.COLUMN_NAME_LATITUDE,
                 TrainingContract.PointEntry.COLUMN_NAME_LONGITUDE,
@@ -164,6 +177,31 @@ public class TrainingDBAdapter {
             output.add(point);
         }
 
+        return output;
+    }
+
+    private LinkedList<Long> getSegmentsId(long trainingId, SQLiteDatabase db){
+        String[] projection = {TrainingContract.SegmentEntry.COLUMN_NAME_ID};
+        String selection = TrainingContract.SegmentEntry.COLUMNN_NAME_TRAINING_ID + " = ?";
+        String[] selectionArgs = {Long.toString(trainingId)};
+        String sortOrder = TrainingContract.SegmentEntry.COLUMN_NAME_ID;
+
+        Cursor c = db.query(
+                TrainingContract.SegmentEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        LinkedList<Long> output = new LinkedList<>();
+
+        while(c.moveToNext()){
+            Long segmentId = c.getLong(c.getColumnIndex(TrainingContract.SegmentEntry.COLUMN_NAME_ID));
+            output.add(segmentId);
+        }
         return output;
     }
 

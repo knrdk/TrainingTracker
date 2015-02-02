@@ -241,8 +241,11 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
     private void openTrainingDetails(long id){
         Intent intent = new Intent(MainActivity.this,
                 TrainingDetailsActivity.class);
+        intent.putExtra(TrainingDetailsActivity.INTENT_ARGUMENT_PARENT_ACTIVITY, TrainingDetailsActivity.INTENT_VALUE_MAIN_ACTIVITY);
         intent.putExtra(TrainingDetailsActivity.INTENT_ARGUMENT_ID, id);
         startActivity(intent);
+
+        stop();
     }
 
     @Override
