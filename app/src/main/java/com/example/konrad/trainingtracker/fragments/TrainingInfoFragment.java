@@ -3,7 +3,6 @@ package com.example.konrad.trainingtracker.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.konrad.trainingtracker.Duration;
+import com.example.konrad.trainingtracker.converters.DistanceUnit;
+import com.example.konrad.trainingtracker.converters.DistanceUnitConverter;
+import com.example.konrad.trainingtracker.converters.SpeedUnit;
+import com.example.konrad.trainingtracker.model.Duration;
 import com.example.konrad.trainingtracker.R;
-import com.example.konrad.trainingtracker.Segment;
-import com.example.konrad.trainingtracker.SpacetimePoint;
-import com.example.konrad.trainingtracker.Training;
+import com.example.konrad.trainingtracker.model.Segment;
+import com.example.konrad.trainingtracker.model.SpacetimePoint;
+import com.example.konrad.trainingtracker.model.Training;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -29,10 +31,12 @@ public class TrainingInfoFragment extends Fragment implements AdapterView.OnItem
     private static final int MAP_CAMERA_ZOOM = 15;
     private GoogleMap map;
     private TextView totalDistance, totalDuration, averageSpeed, currentSpeedTV;
-    private Spinner distanceUnit;
+    private Spinner distanceUnitSpinner;
     private ArrayAdapter<DistanceUnit> distanceUnitAdapter;
-
-    private DistanceUnit selectedDistanceUnit = DistanceUnit.M;
+    private DistanceUnit selectedDistanceUnit = DistanceUnit.KM;
+    private Spinner speedUnitSpinner;
+    private ArrayAdapter<SpeedUnit> speedUnitAdapter;
+    private SpeedUnit selectedSpeedUnit = SpeedUnit.KMPH;
 
     private Training training;
     private Duration duration;
@@ -59,11 +63,13 @@ public class TrainingInfoFragment extends Fragment implements AdapterView.OnItem
         currentSpeedTV = (TextView) view.findViewById(R.id.currentSpeed);
         averageSpeed = (TextView) view.findViewById(R.id.averageSpeed);
 
-        Activity act = getActivity();
-        distanceUnitAdapter = new ArrayAdapter<DistanceUnit>(act, android.R.layout.simple_spinner_item, DistanceUnit.values());
-        distanceUnit = (Spinner) view.findViewById(R.id.distance_unit_spinner);
-        distanceUnit.setAdapter(distanceUnitAdapter);
-        distanceUnit.setOnItemSelectedListener(this);
+        Activity activity = getActivity();
+        
+        distanceUnitAdapter = new ArrayAdapter<DistanceUnit>(activity, android.R.layout.simple_spinner_item, DistanceUnit.values());
+        distanceUnitSpinner = (Spinner) view.findViewById(R.id.distance_unit_spinner);
+        distanceUnitSpinner.setAdapter(distanceUnitAdapter);
+        distanceUnitSpinner.setSelection(distanceUnitAdapter.getPosition(selectedDistanceUnit), true);
+        distanceUnitSpinner.setOnItemSelectedListener(this);
     }
 
     public void setDuration(Duration duration){
@@ -106,7 +112,7 @@ public class TrainingInfoFragment extends Fragment implements AdapterView.OnItem
         DecimalFormat df = new DecimalFormat("#.##");
 
         double distance = training.getDistance();
-        double convertedDistance = DistanceUnitConverter.Convert(distance,selectedDistanceUnit);
+        double convertedDistance = DistanceUnitConverter.Convert(distance, selectedDistanceUnit);
         totalDistance.setText(df.format(convertedDistance));
 
         double currentSpeed = training.getCurrentSpeed();
@@ -123,7 +129,6 @@ public class TrainingInfoFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.d("SPINNER", "SELECTED");
         switch(parent.getId()){
             case R.id.distance_unit_spinner:
                 selectedDistanceUnit = distanceUnitAdapter.getItem(position);
@@ -134,35 +139,6 @@ public class TrainingInfoFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {}
-
-    public enum DistanceUnit{
-        M("M"),
-        KM("KM");
-
-        private String decription;
-
-        private DistanceUnit(String description){
-            this.decription = description;
-        }
-
-        @Override
-        public String toString() {
-            return decription;
-        }
-    }
-
-    private static class DistanceUnitConverter{
-        public static double Convert(double distance, DistanceUnit targetUnit){
-            switch(targetUnit){
-                case M:
-                    return distance;
-                case KM:
-                    return distance/1000;
-                default:
-                    return distance;
-            }
-        }
-    }
 }
 
 

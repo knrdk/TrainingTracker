@@ -1,4 +1,4 @@
-package com.example.konrad.trainingtracker;
+package com.example.konrad.trainingtracker.model;
 
 /**
  * Created by Comarch on 2015-01-26.

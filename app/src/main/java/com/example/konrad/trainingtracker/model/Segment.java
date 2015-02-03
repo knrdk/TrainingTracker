@@ -1,4 +1,4 @@
-package com.example.konrad.trainingtracker;
+package com.example.konrad.trainingtracker.model;
 
 import com.google.android.gms.maps.model.LatLng;
 

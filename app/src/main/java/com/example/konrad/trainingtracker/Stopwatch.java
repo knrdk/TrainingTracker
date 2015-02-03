@@ -3,6 +3,8 @@ package com.example.konrad.trainingtracker;
 import android.app.Activity;
 import android.os.SystemClock;
 
+import com.example.konrad.trainingtracker.model.Duration;
+
 /**
  * Created by Comarch on 2015-01-26.
  */

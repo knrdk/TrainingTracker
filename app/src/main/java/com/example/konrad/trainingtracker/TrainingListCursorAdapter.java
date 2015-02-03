@@ -10,11 +10,9 @@ import android.widget.TextView;
 
 import com.example.konrad.trainingtracker.datastore.TrainingContract;
 import com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
+import com.example.konrad.trainingtracker.model.Duration;
 
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

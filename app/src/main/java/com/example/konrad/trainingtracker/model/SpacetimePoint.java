@@ -1,4 +1,4 @@
-package com.example.konrad.trainingtracker;
+package com.example.konrad.trainingtracker.model;
 
 import android.location.Location;
 

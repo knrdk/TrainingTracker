@@ -5,6 +5,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.konrad.trainingtracker.model.SpacetimePoint;
 import com.google.android.gms.maps.model.LatLng;
 
 /**

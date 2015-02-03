@@ -2,8 +2,6 @@ package com.example.konrad.trainingtracker.datastore;
 
 import android.provider.BaseColumns;
 
-import com.example.konrad.trainingtracker.Training;
-
 /**
  * Created by Konrad on 2015-02-01.
  */

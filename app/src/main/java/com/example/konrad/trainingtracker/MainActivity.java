@@ -12,12 +12,10 @@ import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
 import com.example.konrad.trainingtracker.fragments.GpsReadyFragment;
@@ -25,6 +23,9 @@ import com.example.konrad.trainingtracker.fragments.PausedFragment;
 import com.example.konrad.trainingtracker.fragments.RunningFragment;
 import com.example.konrad.trainingtracker.fragments.TrainingInfoFragment;
 import com.example.konrad.trainingtracker.fragments.WaitingForGpsFragment;
+import com.example.konrad.trainingtracker.model.Duration;
+import com.example.konrad.trainingtracker.model.SpacetimePoint;
+import com.example.konrad.trainingtracker.model.Training;
 import com.google.android.gms.maps.model.LatLng;
 
 import static android.location.LocationManager.GPS_PROVIDER;

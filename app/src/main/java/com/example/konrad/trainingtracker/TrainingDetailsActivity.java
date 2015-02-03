@@ -11,6 +11,8 @@ import android.view.MenuItem;
 
 import com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
 import com.example.konrad.trainingtracker.fragments.TrainingInfoFragment;
+import com.example.konrad.trainingtracker.model.Duration;
+import com.example.konrad.trainingtracker.model.Training;
 
 
 public class TrainingDetailsActivity extends ActionBarActivity {

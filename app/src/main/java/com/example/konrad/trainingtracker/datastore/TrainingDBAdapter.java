@@ -4,14 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Point;
-import android.util.Log;
 
-import com.example.konrad.trainingtracker.Segment;
-import com.example.konrad.trainingtracker.SpacetimePoint;
-import com.example.konrad.trainingtracker.Training;
+import com.example.konrad.trainingtracker.model.Segment;
+import com.example.konrad.trainingtracker.model.SpacetimePoint;
+import com.example.konrad.trainingtracker.model.Training;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.ParseException;
