@@ -17,6 +17,10 @@ public class TrainingDetailsActivity extends ActionBarActivity {
     public final static String INTENT_ARGUMENT_ID = "t_id";
     public final static String INTENT_ARGUMENT_PARENT_ACTIVITY = "parent_activity";
     public final static String INTENT_VALUE_MAIN_ACTIVITY = "MainActivity";
+
+    private final static String INSTANCE_STATE_TRAININGID = "trainingId";
+    private final static String INSTANCE_STATE_PARENT_ACTIVITY = "parentActivity";
+
     private TrainingDBAdapter database;
 
     private String parentActivity;
@@ -27,15 +31,40 @@ public class TrainingDetailsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        training = new Training();
+        duration = new Duration();
+
         setContentView(R.layout.activity_training_details);
 
         parentActivity = getIntent().getStringExtra(INTENT_ARGUMENT_PARENT_ACTIVITY);
         trainingId = getIntent().getLongExtra(INTENT_ARGUMENT_ID, 0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         database = new TrainingDBAdapter(this);
         training = database.getTraining(trainingId);
         duration = new Duration(training.getDuration());
         initializeTrainingInfoFragment();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong(INSTANCE_STATE_TRAININGID, trainingId);
+        outState.putString(INSTANCE_STATE_PARENT_ACTIVITY, parentActivity);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        trainingId = savedInstanceState.getLong(INSTANCE_STATE_TRAININGID);
+        parentActivity = savedInstanceState.getString(INSTANCE_STATE_PARENT_ACTIVITY);
     }
 
     private void initializeTrainingInfoFragment() {

@@ -24,6 +24,12 @@
             android:numeric="decimal"
             android:layout_toRightOf="@id/distanceDescription" />
 
+        <Spinner
+            android:id="@+id/distance_unit_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/totalDistance" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

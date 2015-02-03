@@ -1,16 +1,15 @@
 package com.example.konrad.trainingtracker.fragments;
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.konrad.trainingtracker.Duration;
@@ -24,24 +23,29 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class TrainingInfoFragment extends Fragment {
+import java.text.DecimalFormat;
+
+public class TrainingInfoFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static final int MAP_CAMERA_ZOOM = 15;
     private GoogleMap map;
     private TextView totalDistance, totalDuration, averageSpeed, currentSpeedTV;
+    private Spinner distanceUnit;
+    private ArrayAdapter<DistanceUnit> distanceUnitAdapter;
 
-    private Training training = new Training();
+    private DistanceUnit selectedDistanceUnit = DistanceUnit.M;
+
+    private Training training;
     private Duration duration;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        duration = new Duration();
-        training = new Training();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater,container,savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_training_info, container, false);
         initializeViewFields(view);
         return view;
@@ -54,6 +58,12 @@ public class TrainingInfoFragment extends Fragment {
         totalDuration = (TextView) view.findViewById(R.id.totalDuration);
         currentSpeedTV = (TextView) view.findViewById(R.id.currentSpeed);
         averageSpeed = (TextView) view.findViewById(R.id.averageSpeed);
+
+        Activity act = getActivity();
+        distanceUnitAdapter = new ArrayAdapter<DistanceUnit>(act, android.R.layout.simple_spinner_item, DistanceUnit.values());
+        distanceUnit = (Spinner) view.findViewById(R.id.distance_unit_spinner);
+        distanceUnit.setAdapter(distanceUnitAdapter);
+        distanceUnit.setOnItemSelectedListener(this);
     }
 
     public void setDuration(Duration duration){
@@ -93,18 +103,66 @@ public class TrainingInfoFragment extends Fragment {
     }
 
     private void updateInformation() {
+        DecimalFormat df = new DecimalFormat("#.##");
+
         double distance = training.getDistance();
-        totalDistance.setText(Double.toString(distance));
+        double convertedDistance = DistanceUnitConverter.Convert(distance,selectedDistanceUnit);
+        totalDistance.setText(df.format(convertedDistance));
 
         double currentSpeed = training.getCurrentSpeed();
-        currentSpeedTV.setText(Double.toString(currentSpeed));
+        currentSpeedTV.setText(df.format(currentSpeed));
 
         double speed = training.getAverageSpeed();
-        averageSpeed.setText(Double.toString(speed));
+        averageSpeed.setText(df.format(speed));
     }
 
     private void updateDuration() {
         String timerValue = duration.toString();
         totalDuration.setText(timerValue);
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("SPINNER", "SELECTED");
+        switch(parent.getId()){
+            case R.id.distance_unit_spinner:
+                selectedDistanceUnit = distanceUnitAdapter.getItem(position);
+                break;
+        }
+        updateInformation();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {}
+
+    public enum DistanceUnit{
+        M("M"),
+        KM("KM");
+
+        private String decription;
+
+        private DistanceUnit(String description){
+            this.decription = description;
+        }
+
+        @Override
+        public String toString() {
+            return decription;
+        }
+    }
+
+    private static class DistanceUnitConverter{
+        public static double Convert(double distance, DistanceUnit targetUnit){
+            switch(targetUnit){
+                case M:
+                    return distance;
+                case KM:
+                    return distance/1000;
+                default:
+                    return distance;
+            }
+        }
+    }
 }
+
+
