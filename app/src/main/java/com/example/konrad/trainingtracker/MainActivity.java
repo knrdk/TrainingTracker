@@ -2,6 +2,7 @@ package com.example.konrad.trainingtracker;
 
 import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -321,10 +322,17 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
         DecimalFormat df = new DecimalFormat("#.##");
         String distanceText = df.format(training.getDistance());
 
+        Intent notificationIntent = new Intent(MainActivity.this, MainActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,
+                0, notificationIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
+                        .setContentIntent(contentIntent)
                         .setSmallIcon(R.drawable.ic_plusone_small_off_client);
-
         NotificationCompat.InboxStyle inboxStyle =
                 new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle(getString(R.string.trainingInPrograss));
