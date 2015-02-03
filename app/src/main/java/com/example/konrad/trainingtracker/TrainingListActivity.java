@@ -63,7 +63,9 @@ public class TrainingListActivity extends ActionBarActivity implements AdapterVi
     private void openTrainingDetails(long id){
         Intent intent = new Intent(TrainingListActivity.this,
                 TrainingDetailsActivity.class);
+        intent.putExtra(TrainingDetailsActivity.INTENT_ARGUMENT_PARENT_ACTIVITY,TrainingDetailsActivity.INTENT_VALUE_LIST_ACTIVITY);
         intent.putExtra(TrainingDetailsActivity.INTENT_ARGUMENT_ID,id);
         startActivity(intent);
+        finish();
     }
 }

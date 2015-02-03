@@ -17,6 +17,7 @@ public class TrainingDetailsActivity extends ActionBarActivity {
     public final static String INTENT_ARGUMENT_ID = "t_id";
     public final static String INTENT_ARGUMENT_PARENT_ACTIVITY = "parent_activity";
     public final static String INTENT_VALUE_MAIN_ACTIVITY = "MainActivity";
+    public final static String INTENT_VALUE_LIST_ACTIVITY = "ListActivity";
 
     private final static String INSTANCE_STATE_TRAININGID = "trainingId";
     private final static String INSTANCE_STATE_PARENT_ACTIVITY = "parentActivity";
@@ -25,15 +26,12 @@ public class TrainingDetailsActivity extends ActionBarActivity {
 
     private String parentActivity;
     private long trainingId;
-    private Training training = new Training();
-    private Duration duration = new Duration();
+    private Training training;
+    private Duration duration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        training = new Training();
-        duration = new Duration();
 
         setContentView(R.layout.activity_training_details);
 
@@ -49,22 +47,6 @@ public class TrainingDetailsActivity extends ActionBarActivity {
         training = database.getTraining(trainingId);
         duration = new Duration(training.getDuration());
         initializeTrainingInfoFragment();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putLong(INSTANCE_STATE_TRAININGID, trainingId);
-        outState.putString(INSTANCE_STATE_PARENT_ACTIVITY, parentActivity);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        trainingId = savedInstanceState.getLong(INSTANCE_STATE_TRAININGID);
-        parentActivity = savedInstanceState.getString(INSTANCE_STATE_PARENT_ACTIVITY);
     }
 
     private void initializeTrainingInfoFragment() {
@@ -102,6 +84,11 @@ public class TrainingDetailsActivity extends ActionBarActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && INTENT_VALUE_MAIN_ACTIVITY.equals(parentActivity)) {
             Intent intent = new Intent(TrainingDetailsActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }else if(keyCode == KeyEvent.KEYCODE_BACK && INTENT_VALUE_LIST_ACTIVITY.equals(parentActivity)){
+            Intent intent = new Intent(TrainingDetailsActivity.this, TrainingListActivity.class);
             startActivity(intent);
             finish();
             return true;
