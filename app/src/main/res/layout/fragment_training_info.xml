@@ -28,7 +28,9 @@
             android:id="@+id/distance_unit_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/totalDistance" />
+            android:layout_toRightOf="@id/totalDistance"
+            android:layout_alignParentEnd="false"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,13 +64,21 @@
             android:layout_toRightOf="@id/averageSpeedDescription"
             android:layout_below="@id/durationDescription" />
 
+        <Spinner
+            android:id="@+id/average_speed_unit_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/averageSpeed"
+            android:layout_below="@id/durationDescription"
+            android:layout_marginLeft="16dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/currentSpeedDescription"
             android:text="Prędkość chwilowa: "
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_below="@id/averageSpeedDescription" />
+            android:layout_below="@id/average_speed_unit_spinner" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -76,7 +86,15 @@
             android:id="@+id/currentSpeed"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_toRightOf="@id/currentSpeedDescription"
-            android:layout_below="@id/averageSpeedDescription" />
+            android:layout_below="@id/average_speed_unit_spinner" />
+
+        <Spinner
+            android:id="@+id/current_speed_unit_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/currentSpeed"
+            android:layout_below="@id/average_speed_unit_spinner"
+            android:layout_marginLeft="16dp" />
 
     </RelativeLayout>
 

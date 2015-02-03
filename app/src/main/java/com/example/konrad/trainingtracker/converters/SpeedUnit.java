@@ -9,8 +9,12 @@ public enum SpeedUnit{
 
     private String description;
 
-    private SpeedUnit(String description){this.description = description;}
+    private SpeedUnit(String description){
+        this.description = description;
+    }
 
     @Override
-    public String toString(){return description;}
+    public String toString() {
+        return description;
+    }
 }
