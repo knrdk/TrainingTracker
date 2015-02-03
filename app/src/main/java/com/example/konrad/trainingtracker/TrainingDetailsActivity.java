@@ -19,9 +19,6 @@ public class TrainingDetailsActivity extends ActionBarActivity {
     public final static String INTENT_VALUE_MAIN_ACTIVITY = "MainActivity";
     public final static String INTENT_VALUE_LIST_ACTIVITY = "ListActivity";
 
-    private final static String INSTANCE_STATE_TRAININGID = "trainingId";
-    private final static String INSTANCE_STATE_PARENT_ACTIVITY = "parentActivity";
-
     private TrainingDBAdapter database;
 
     private String parentActivity;
