@@ -7,5 +7,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_training_list">TrainingListActivity</string>
     <string name="title_activity_training_details">TrainingDetailsActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="confirmation">Potwierdzenie</string>
+    <string name="wantDelete">Czy chcesz usunąć trening</string>
+    <string name="wantStop">Czy chcesz przerwać trening</string>
+    <string name="gpsDisabled">GPS jest wyłączony, czy chcesz go włączyć ?</string>
+    <string name="trainingInPrograss">Trening w trakcie</string>
+
+    <string name="time">Czas: </string>
+    <string name="distance">Dystans: </string>
+    <string name="preference_file_key">Setting_SP</string>
+    <string name="preference_minimal_accuracy">setting_minimal_accuracy</string>
 </resources>

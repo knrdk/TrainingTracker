@@ -70,6 +70,8 @@ public class TrainingDetailsActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(TrainingDetailsActivity.this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }else if(id == R.id.action_delete){
             showConfirmationAlert();
@@ -97,16 +99,16 @@ public class TrainingDetailsActivity extends ActionBarActivity {
 
     private void showConfirmationAlert() {
         AlertDialog alertDialog = new AlertDialog.Builder(TrainingDetailsActivity.this).create();
-        alertDialog.setTitle("Potwierdzenie");
-        alertDialog.setMessage("Czy chcesz usunąć trening");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TAK",
+        alertDialog.setTitle(getString(R.string.confirmation));
+        alertDialog.setMessage(getString(R.string.wantDelete));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         deleteTraining();
                     }
                 });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NIE",
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

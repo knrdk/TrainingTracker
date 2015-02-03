@@ -21,11 +21,12 @@ import java.util.Date;
  * Created by Konrad on 2015-02-01.
  */
 public class TrainingListCursorAdapter extends CursorAdapter {
+    private final static String DATETIME_FORMAT = "yyyy-MM-dd HH:mm";
+    private final static String DECIMAL_FORMAT = "#.##";
 
     public TrainingListCursorAdapter(Context context, Cursor cur) {
         super(context, cur);
     }
-
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -51,12 +52,12 @@ public class TrainingListCursorAdapter extends CursorAdapter {
     }
 
     private String formatDate(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATETIME_FORMAT);
         return sdf.format(date);
     }
 
     private String formatDouble(double x){
-        DecimalFormat df = new DecimalFormat("#.##");
+        DecimalFormat df = new DecimalFormat(DECIMAL_FORMAT);
         return df.format(x);
     }
 }

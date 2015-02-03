@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -28,10 +29,13 @@ import com.example.konrad.trainingtracker.model.SpacetimePoint;
 import com.example.konrad.trainingtracker.model.Training;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.DecimalFormat;
+
 import static android.location.LocationManager.GPS_PROVIDER;
 
 public class MainActivity extends ActionBarActivity implements SpacetimeListener, DurationListener {
     private static final String WAKE_LOCK_TAG = "TrainingTrackerWakeLockTag";
+    private static final int NOTIFICATION_DETAIL_ID = 123;
     private PowerManager.WakeLock wakeLock;
     LocationManager locationManager;
     private GpsLocationListener locationListener;
@@ -98,6 +102,8 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }else if(id == R.id.action_history){
             Intent intent = new Intent(MainActivity.this, TrainingListActivity.class);
@@ -144,8 +150,11 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
     }
 
     private void requestLocationUpdates(){
-        locationListener = new GpsLocationListener(this);
-        locationManager.requestLocationUpdates(GPS_PROVIDER, 1, 0.1f, locationListener); //TODO: delete magic numbers
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        float currentMinimalAccuracy = sharedPref.getFloat(getString(R.string.preference_minimal_accuracy),SettingsActivity.DEFAULT_MINIMAL_ACCURACY);
+
+        locationListener = new GpsLocationListener(this, currentMinimalAccuracy);
+        locationManager.requestLocationUpdates(GPS_PROVIDER, 1, 0.1f, locationListener);
     }
 
     private void setState(TrackerState newState) {
@@ -268,16 +277,16 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
 
     private void showAlertCloseApplication() {
         AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle("Alert");
-        alertDialog.setMessage("Czy chcesz przerwać trening");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TAK",
+        alertDialog.setTitle(getString(R.string.confirmation));
+        alertDialog.setMessage(getString(R.string.wantStop));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         stop();
                     }
                 });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NIE",
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -288,9 +297,9 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
 
     private void showAlertGpsDisabled() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("GPS jest wyłączony, czy chcesz go włączyć ?")
+        alertDialogBuilder.setMessage(getString(R.string.gpsDisabled))
                 .setCancelable(false)
-                .setPositiveButton("TAK",
+                .setPositiveButton(getString(R.string.yes),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 Intent callGPSSettingIntent = new Intent(
@@ -298,7 +307,7 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
                                 startActivity(callGPSSettingIntent);
                             }
                         });
-        alertDialogBuilder.setNegativeButton("NIE",
+        alertDialogBuilder.setNegativeButton(getString(R.string.no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
@@ -309,20 +318,28 @@ public class MainActivity extends ActionBarActivity implements SpacetimeListener
     }
 
     private void showNotification(String timerValue) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        String distanceText = df.format(training.getDistance());
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_plusone_small_off_client)
-                        .setContentTitle("Total Time")
-                        .setContentText(timerValue);
+                        .setSmallIcon(R.drawable.ic_plusone_small_off_client);
 
-        notificationManager.notify(123, mBuilder.build());
+        NotificationCompat.InboxStyle inboxStyle =
+                new NotificationCompat.InboxStyle();
+        inboxStyle.setBigContentTitle(getString(R.string.trainingInPrograss));
+        inboxStyle.addLine(getString(R.string.time) + timerValue);
+        inboxStyle.addLine(getString(R.string.distance) + distanceText);
+        mBuilder.setStyle(inboxStyle);
+
+        notificationManager.notify(NOTIFICATION_DETAIL_ID, mBuilder.build());
     }
 
     public void stop() {
         locationListener.unregister();
         locationManager.removeUpdates(locationListener);
         stopwatch.stop();
-        notificationManager.cancel(123);
+        notificationManager.cancel(NOTIFICATION_DETAIL_ID);
         finish();
     }
 

@@ -17,7 +17,6 @@ import com.example.konrad.trainingtracker.datastore.TrainingDBAdapter;
 
 public class TrainingListActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
     private TrainingDBAdapter database;
-    TrainingListCursorAdapter cursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +24,11 @@ public class TrainingListActivity extends ActionBarActivity implements AdapterVi
         setContentView(R.layout.activity_training_list);
 
         database = new TrainingDBAdapter(this);
+        initTrainingList();
+    }
 
-        cursorAdapter = new TrainingListCursorAdapter(this,database.getAllTrainings());
+    private void initTrainingList() {
+        TrainingListCursorAdapter cursorAdapter = new TrainingListCursorAdapter(this,database.getAllTrainings());
         ListView lv = (ListView) findViewById(R.id.trainings_LV);
         lv.setAdapter(cursorAdapter);
         lv.setOnItemClickListener(this);
@@ -49,6 +51,8 @@ public class TrainingListActivity extends ActionBarActivity implements AdapterVi
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(TrainingListActivity.this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 

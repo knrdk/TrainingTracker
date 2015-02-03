@@ -19,7 +19,8 @@ public class GpsLocationListener implements LocationListener {
     private SpacetimeListener observer;
     private SpacetimePoint lastReturnedPoint = null;
 
-    public GpsLocationListener(SpacetimeListener x) {
+    public GpsLocationListener(SpacetimeListener x, float minimalAccuracy) {
+        minimalAccuracyInMeters = minimalAccuracy;
         observer = x;
     }
 
